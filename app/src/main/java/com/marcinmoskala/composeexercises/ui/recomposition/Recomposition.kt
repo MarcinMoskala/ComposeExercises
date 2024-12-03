@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 
-// Odczyt powoduje rekompozycję!
 @Preview
 @Composable
 fun Recomposition() {
