@@ -6,7 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,10 +30,12 @@ import kotlinx.coroutines.delay
 @Composable
 fun KeyExampleScreen() {
     var elements by remember { mutableStateOf(List(10) { "Item $it" }) }
-
+    var counter by remember { mutableStateOf(0) }
     Scaffold(
         floatingActionButton = {
-            Text("Add", modifier = Modifier.clickable { elements = listOf("New item") + elements })
+            AddActionButton(onClick = {
+                elements = listOf("New item ${counter++}") + elements
+            })
         }
     ) { innerPadding ->
         LazyColumn(
@@ -45,7 +51,7 @@ fun KeyExampleScreen() {
 @Composable
 fun Element(text: String, onClick: () -> Unit) {
     var loading by remember { mutableStateOf(true) }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(text) {
         loading = true
         delay(1000) // Simulate loading
         loading = false
@@ -55,6 +61,16 @@ fun Element(text: String, onClick: () -> Unit) {
     } else {
         TextItem(text, onClick)
     }
+}
+
+@Composable
+private fun AddActionButton(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = { onClick() },
+        content = {
+            Icon(Icons.Filled.Add, "Floating action button.")
+        }
+    )
 }
 
 @Composable
@@ -68,7 +84,8 @@ private fun TextItem(text: String, onClick: () -> Unit) {
 @Composable
 private fun LoadingBar() {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .padding(16.dp),
         contentAlignment = Alignment.Center,
     ) {
