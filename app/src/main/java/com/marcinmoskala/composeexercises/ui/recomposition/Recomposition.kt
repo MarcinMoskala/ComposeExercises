@@ -4,8 +4,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -36,3 +40,22 @@ fun BodyWriting(value: MutableState<Boolean>) {
     Text(" ")
     Text(" ")
 }
+
+//
+
+@Preview
+@Composable
+fun Parent() {
+    var counter by remember { mutableIntStateOf(0) }
+    SideEffect { println("Parent recompose") }
+    Child(counter = {counter}, onIncrement = { counter++ })
+}
+
+@Composable
+fun Child(counter: () -> Int, onIncrement: () -> Unit) {
+    SideEffect { println("Child recompose") }
+    Button(onClick = onIncrement) {
+        Text("Click me: ${counter()}")
+    }
+}
+

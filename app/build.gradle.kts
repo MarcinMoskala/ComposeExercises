@@ -41,7 +41,8 @@ android {
 }
 
 composeCompiler {
-    enableStrongSkippingMode = false
+//    stabilityConfigurationFiles = listOf(rootProject.layout.projectDirectory.file("stability_config.conf"))
+//    enableStrongSkippingMode = false
 }
 
 composeCompiler {
@@ -68,4 +69,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.accompanist.flowlayout)
 }
