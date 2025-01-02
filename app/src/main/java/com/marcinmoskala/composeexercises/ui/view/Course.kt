@@ -1,6 +1,5 @@
 package com.marcinmoskala.composeexercises.ui.view
 
-import android.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,10 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview
 @Composable
 fun CoursesList(
-    courses: List<Course> = fakeCourses,
+    courses: List<Course>,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -45,6 +43,30 @@ fun CoursesList(
             CourseItem(course)
         }
     }
+}
+
+@Preview(device = "spec:width=1080px,height=2340px,dpi=440,isRound=true,cutout=punch_hole")
+@Composable
+fun CoursesListSmallPreview() {
+    CoursesList(courses = fakeCourses)
+}
+
+@Preview(device = "spec:width=1080px,height=2340px,dpi=440,isRound=true,cutout=punch_hole")
+@Composable
+fun CoursesListPreview() {
+    CoursesList(courses = fakeCourses)
+}
+
+@Preview(device = "spec:width=1280dp,height=800dp,dpi=240")
+@Composable
+fun CoursesListTabletPreview() {
+    CoursesList(courses = fakeCourses)
+}
+
+@Preview(device = "spec:width=1920dp,height=1080dp,dpi=160")
+@Composable
+fun CoursesListDesktopPreview() {
+    CoursesList(courses = fakeCourses)
 }
 
 @Composable
@@ -65,7 +87,7 @@ fun CourseItem(course: Course) {
             modifier = Modifier.padding(12.dp),
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_menu_report_image),
+                painter = painterResource(id = android.R.drawable.ic_menu_report_image),
                 alignment = Alignment.Center,
                 contentScale = ContentScale.Fit,
                 contentDescription = course.name,

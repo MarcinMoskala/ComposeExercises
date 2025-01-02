@@ -1,5 +1,7 @@
 package com.marcinmoskala.composeexercises.ui.view
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -11,13 +13,17 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun LoadingBar() {
+fun LoadingBar(progress: Float? = 0.7f) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        CircularProgressIndicator(
-            progress = { .7f },
-        )
+        if (progress != null) {
+            CircularProgressIndicator(
+                progress = { progress },
+            )
+        } else {
+            CircularProgressIndicator()
+        }
     }
 }

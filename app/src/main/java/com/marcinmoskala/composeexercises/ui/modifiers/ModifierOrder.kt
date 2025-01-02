@@ -2,10 +2,12 @@ package com.marcinmoskala.composeexercises.ui.modifiers
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,15 +26,43 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.marcinmoskala.composeexercises.R
 
+@Preview
+@Composable
+fun OrderMatters() {
+    Text(
+        text = "Hello, World!",
+        modifier = Modifier
+            .background(Green)
+            .padding(20.dp)
+    )
+    Text(
+        text = "Hello, World!",
+        modifier = Modifier
+            .padding(20.dp)
+            .background(Green)
+    )
+    Text(
+        text = "Hello, World!",
+        modifier = Modifier
+            .clickable {  }
+            .padding(20.dp)
+    )
+    Text(
+        text = "Hello, World!",
+        modifier = Modifier
+            .padding(20.dp)
+            .clickable {  }
+    )
+}
+
 @Preview(device = Devices.PIXEL_4_XL)
 @Composable
-fun Order(
+fun RainbowBorderExample(
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier.size(100.dp)
     ) {
-
         Image(
             painter = painterResource(id = R.drawable.avatar),
             contentDescription = "Image",
@@ -44,11 +74,10 @@ fun Order(
                 .background(Blue)
                 .padding(10.dp)
         )
-
     }
 }
 
-@Preview
+//@Preview
 @Composable
 fun UserItem(
     user: User = User("Name", "imageUrl"),
@@ -76,3 +105,24 @@ fun UserItem(
 }
 
 data class User(val name: String, val imageUrl: String)
+
+@Preview
+@Composable
+fun ComplexModifierOrder() {
+    Box(
+        modifier = Modifier.size(100.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.avatar),
+            contentDescription = "Image",
+
+            modifier = Modifier
+                .background(Green)
+                .clip(CircleShape)
+                .border(2.dp, Red)
+                .offset(10.dp, 10.dp)
+                .padding(10.dp)
+
+        )
+    }
+}
