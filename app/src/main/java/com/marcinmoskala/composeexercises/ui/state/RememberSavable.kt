@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun RememberSavable() {
+private fun RememberSavable() {
     var email by remember { mutableStateOf("") }
     var emailSavable by rememberSaveable { mutableStateOf("") }
 

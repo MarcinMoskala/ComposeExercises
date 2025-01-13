@@ -53,25 +53,25 @@ import kotlin.random.Random
 //}
 
 @Composable
-fun CollectionProcessingChallengeScreen(level: Int) {
+private fun CollectionProcessingChallengeScreen(level: Int) {
     val difficulty = remember(level) { difficultyForLevel(level) }
     val challenge = rememberSaveable(level) { generateChallenge(difficulty) }
 }
 
-fun difficultyForLevel(level: Int): Difficulty {
+private fun difficultyForLevel(level: Int): Difficulty {
     return Difficulty(10, listOf("Apple", "Banana"))
 }
 
-data class Difficulty(val steps: Int, val fruits: List<String>)
+private data class Difficulty(val steps: Int, val fruits: List<String>)
 
-data class Challenge(val text: String)
+private data class Challenge(val text: String)
 
-fun generateChallenge(difficulty: Difficulty): Challenge {
+private fun generateChallenge(difficulty: Difficulty): Challenge {
     return Challenge("Challenge")
 }
 
 @Composable
-fun Toggle(text: String) {
+private fun Toggle(text: String) {
     var checked = remember { mutableStateOf(false) }
 
     // ...
@@ -80,7 +80,7 @@ fun Toggle(text: String) {
 
 @Preview
 @Composable
-fun StateExamples() {
+private fun StateExamples() {
     Column {
         val state1 = remember { mutableStateOf("") }
         TextField(value = state1.value, onValueChange = { state1.value = it })
@@ -99,7 +99,7 @@ class StateHolder {
 
 @Preview
 @Composable
-fun StateExamples2(holder: StateHolder = remember { StateHolder() }) {
+private fun StateExamples2(holder: StateHolder = remember { StateHolder() }) {
     Column {
         val state1 = holder.state
         TextField(value = state1.value, onValueChange = { state1.value = it })
@@ -128,7 +128,7 @@ private fun Title(text: String) {
 
 // Transform objects to a flow
 
-class ViewModel {
+private class ViewModel {
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 }
@@ -136,7 +136,7 @@ class ViewModel {
 // Narrow the recomposition scope
 
 @Composable
-fun NarrowRecompositionScope(vm: ViewModel) {
+private fun NarrowRecompositionScope(vm: ViewModel) {
 //    val isLoading = vm.isLoading.value // NO!
     val isLoading by vm.isLoading.collectAsStateWithLifecycle() // YES!
     // ...
@@ -165,13 +165,13 @@ private fun DiceLabel(number: () -> Int) {
     Text("Dice result: ${number()}")
 }
 
-fun dice(): Int = Random.nextInt(6) + 1
+private fun dice(): Int = Random.nextInt(6) + 1
 
 // Challenges
 
 // 1
 @Composable
-fun NameBadge(profile: Profile) {
+private fun NameBadge(profile: Profile) {
     val imageUrl = remember { profile.imageUrl }
     val initials = run {
         val (name, surname) = profile.fullName.split(" ")
@@ -204,21 +204,21 @@ fun NameBadge(profile: Profile) {
 
 @Preview
 @Composable
-fun NameBadgeImagePreview() {
+private fun NameBadgeImagePreview() {
     NameBadge(Profile("Marcin Moskala", "https://lh3.googleusercontent.com/a-/AOh14GgT-nGHTlbxHpiPyUUhgruiheIEyBVEsCDWNdW0xA=s400-c"))
 }
 
 @Preview
 @Composable
-fun NameBadgeInitialsPreview() {
+private fun NameBadgeInitialsPreview() {
     NameBadge(Profile("Marcin Moskala", null))
 }
 
-data class Profile(val fullName: String, val imageUrl: String?)
+private data class Profile(val fullName: String, val imageUrl: String?)
 
 // 2
 @Composable
-fun ChallengeScreen(level: Int) {
+private fun ChallengeScreen(level: Int) {
     val difficulty = difficultyForLevel(level) // Assume it is CPU-intensive
     val steps = difficulty.steps
     val fruits = difficulty.fruits
@@ -236,13 +236,13 @@ fun ChallengeScreen(level: Int) {
     }
 }
 
-fun generateChallenge(steps: Int, fruits: List<String>): Challenge {
+private fun generateChallenge(steps: Int, fruits: List<String>): Challenge {
     return Challenge("Challenge")
 }
 
 // 3
 @Composable
-fun ShoppingCartItem(
+private fun ShoppingCartItem(
     initialPrice: Double,
     quantity: Int
 ) {
@@ -289,55 +289,8 @@ fun ShoppingCartItem(
 
 @Composable
 @Preview
-fun ShoppingCartItemPreview() {
+private fun ShoppingCartItemPreview() {
     ShoppingCartItem(100.0, 10)
-}
-
-// 4
-@Composable
-@Preview
-fun InvoiceForm() {
-    var country by remember { mutableStateOf<Country?>(null) }
-    val taxRate = remember { country?.let(::taxRateForCountry) }
-    var taxId by remember { mutableStateOf("") } // Should reset it when country changes
-
-    Column {
-        Text("Country:")
-        Row {
-            for (c in Country.entries) {
-                Box(
-                    contentAlignment = Center,
-                    modifier = Modifier
-                        .width(70.dp)
-                        .clickable { country = c }
-                        .padding(4.dp)
-                        .border(if (c == country) 4.dp else 1.dp, Color.Black)
-                ) {
-                    Text(c.name)
-                }
-            }
-        }
-        Text("Tax rate: ${taxRate?.times(100)}%")
-        TextField(
-            value = taxId,
-            onValueChange = { taxId = it },
-            label = { Text("Tax ID") }
-        )
-    }
-}
-
-enum class Country {
-    Poland, Germany, France, UK, USA
-}
-
-fun taxRateForCountry(country: Country): Double {
-    return when (country) {
-        Country.Poland -> 0.23
-        Country.Germany -> 0.25
-        Country.France -> 0.30
-        Country.UK -> 0.15
-        Country.USA -> 0.08
-    }
 }
 
 // Puzzler
@@ -347,7 +300,7 @@ private fun getIntFlow() = flow {
 }
 
 @Composable
-fun dev() {
+private fun dev() {
     val i by getIntFlow().collectAsState(0)
     Text("Hello: $i !")
 }
