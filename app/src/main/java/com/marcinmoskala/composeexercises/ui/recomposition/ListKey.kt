@@ -28,7 +28,7 @@ import kotlinx.coroutines.delay
 
 @Preview
 @Composable
-fun KeyExampleScreen() {
+private fun KeyExampleScreen() {
     var elements by remember { mutableStateOf(List(10) { "Item $it" }) }
     var counter by remember { mutableStateOf(0) }
     Scaffold(
@@ -41,7 +41,7 @@ fun KeyExampleScreen() {
         LazyColumn(
             modifier = Modifier.padding(innerPadding)
         ) {
-            items(elements, key = { it }) { elem ->
+            items(elements) { elem ->
                 Element(elem, onClick = { elements -= elem })
             }
         }
@@ -49,7 +49,7 @@ fun KeyExampleScreen() {
 }
 
 @Composable
-fun Element(text: String, onClick: () -> Unit) {
+private fun Element(text: String, onClick: () -> Unit) {
     var loading by remember { mutableStateOf(true) }
     LaunchedEffect(text) {
         loading = true

@@ -11,10 +11,12 @@ kotlinxCollectionsImmutable = "0.3.8"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.11.00"
+navigationCompose = "2.8.5"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3-io" }
 coil3 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3-io" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

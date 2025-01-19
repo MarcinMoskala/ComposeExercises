@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="NoRippleClickablePreview">
+      <SelectionState runConfigName="FlashcardApplication">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="dev">
+      <SelectionState runConfigName="GuessNumberGame">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="TitleHolder">
+      <SelectionState runConfigName="A">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="DiceWindow">
+      <SelectionState runConfigName="KeyExampleScreen">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="InvoiceForm">
+      <SelectionState runConfigName="ExampleMovableContent">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
