@@ -110,20 +110,6 @@ private fun StateExamples2(holder: StateHolder = remember { StateHolder() }) {
     }
 }
 
-// State triggers reader composable recomposition
-
-@Composable
-private fun Title(text: String) {
-    val offset: State<Int> = animateIntAsState(100, label = "offset")
-    // ...
-    Column(
-        modifier = Modifier
-            .offset { IntOffset(x = 0, y = offset.value) }
-    ) {
-        // ...
-    }
-}
-
 // Transform objects to a flow
 
 private class ViewModel {

@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun Recomposition() {
+private fun Recomposition() {
     val value = remember { mutableStateOf(false) }
     println("Recompose Recomposition")
     Button(onClick = { value.value = !value.value }) {
@@ -26,7 +26,7 @@ fun Recomposition() {
 }
 
 @Composable
-fun BodyReading(value: MutableState<Boolean>) {
+private fun BodyReading(value: MutableState<Boolean>) {
     println("Recompose BodyReading")
     println("Value: ${value.value}")
     Text(" ")
@@ -34,7 +34,7 @@ fun BodyReading(value: MutableState<Boolean>) {
 }
 
 @Composable
-fun BodyWriting(value: MutableState<Boolean>) {
+private fun BodyWriting(value: MutableState<Boolean>) {
     println("Recompose BodyNotReading")
     value.value = false
     Text(" ")
@@ -45,14 +45,14 @@ fun BodyWriting(value: MutableState<Boolean>) {
 
 @Preview
 @Composable
-fun Parent() {
+private fun Parent() {
     var counter by remember { mutableIntStateOf(0) }
     SideEffect { println("Parent recompose") }
     Child(counter = {counter}, onIncrement = { counter++ })
 }
 
 @Composable
-fun Child(counter: () -> Int, onIncrement: () -> Unit) {
+private fun Child(counter: () -> Int, onIncrement: () -> Unit) {
     SideEffect { println("Child recompose") }
     Button(onClick = onIncrement) {
         Text("Click me: ${counter()}")
