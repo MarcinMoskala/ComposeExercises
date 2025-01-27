@@ -46,7 +46,12 @@ import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.offset
 import com.marcinmoskala.composeexercises.R
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 //fun Modifier.clip(shape: Shape) =
 //    graphicsLayer(shape = shape, clip = true)
@@ -340,7 +345,9 @@ data class PercentPaddingElement(
     private val percent: Float,
 ) : ModifierNodeElement<PercentPaddingNode>() {
     override fun create() = PercentPaddingNode(percent)
-    override fun update(node: PercentPaddingNode) { node.percent = percent }
+    override fun update(node: PercentPaddingNode) {
+        node.percent = percent
+    }
 }
 
 class PercentPaddingNode(var percent: Float) : LayoutModifierNode, Modifier.Node() {
