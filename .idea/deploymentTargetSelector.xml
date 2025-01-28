@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="GroceryListPreview">
+      <SelectionState runConfigName="NavigationTransitions">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="GroceryListAddItemPreview">
+      <SelectionState runConfigName="AnimatedVisibilityPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PulsatingButton">
+      <SelectionState runConfigName="AnimatedVisibilityGame">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PulsatingButton (1)">
+      <SelectionState runConfigName="AnimatedVisibilityPreview (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PulsatingButtonPreview1">
+      <SelectionState runConfigName="AnimatedVisibilityTransformationsPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
