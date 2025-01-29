@@ -223,7 +223,6 @@ private fun GroceryItem(
             }
             return@rememberSwipeToDismissBoxState false
         },
-        // positional threshold of 25%
         positionalThreshold = { it * .25f }
     )
 
