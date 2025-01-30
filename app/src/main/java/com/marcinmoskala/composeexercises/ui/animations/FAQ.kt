@@ -1,8 +1,5 @@
 package com.marcinmoskala.composeexercises.ui.animations
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,34 +28,29 @@ import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview
 @Composable
-private fun FrequentlyAskedQuestionsPage() {
+fun FrequentlyAskedQuestionsPage(state: FAQState, toggleOpen: (Int) -> Unit) {
     LazyColumn(
         modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
     ) {
-        faq.forEach { (question, answer) ->
+        state.items.forEachIndexed { i, (question, answer, isOpen) ->
             item {
-                FAQItem(question, answer)
+                FAQItem(question, answer, isOpen, { toggleOpen(i) })
             }
         }
     }
 }
 
-private val faq = mapOf(
-    "Example question 1" to LoremIpsum(100).values.first().replace("\n", " "),
-    "Example question 2" to LoremIpsum(100).values.first().replace("\n", " "),
-    "Example question 3" to LoremIpsum(100).values.first().replace("\n", " "),
-    "Example question 4" to LoremIpsum(100).values.first().replace("\n", " "),
-)
+data class FAQState(val items: List<FAQItemState>)
+
+data class FAQItemState(val question: String, val answer: String, val isOpen: Boolean = false)
 
 @Composable
-private fun FAQItem(question: String, answer: String) {
-    var isOpen by remember { mutableStateOf(false) }
+private fun FAQItem(question: String, answer: String, isOpen: Boolean, toggleOpen: (Boolean) -> Unit, modifier: Modifier = Modifier) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { isOpen = !isOpen }
+            .clickable { toggleOpen(isOpen) }
             .padding(4.dp)
     ) {
         Column(
@@ -97,3 +89,24 @@ private fun FAQItem(question: String, answer: String) {
         }
     }
 }
+
+@Preview
+@Composable
+private fun FrequentlyAskedQuestionsPagePreview() {
+    var state by remember { mutableStateOf(FAQState(faq.map { (q, a) -> FAQItemState(q, a) })) }
+    FrequentlyAskedQuestionsPage(state, { i -> state = state.copy(items = state.items.mapIndexed { index, item -> if (index == i) item.copy(isOpen = !item.isOpen) else item }) })
+}
+
+@Preview
+@Composable
+private fun FrequentlyAskedQuestionsPageOpenedPreview() {
+    var state by remember { mutableStateOf(FAQState(faq.map { (q, a) -> FAQItemState(q, a, true) })) }
+    FrequentlyAskedQuestionsPage(state, { i -> state = state.copy(items = state.items.mapIndexed { index, item -> if (index == i) item.copy(isOpen = !item.isOpen) else item }) })
+}
+
+private val faq = mapOf(
+    "Example question 1" to LoremIpsum(100).values.first().replace("\n", " "),
+    "Example question 2" to LoremIpsum(100).values.first().replace("\n", " "),
+    "Example question 3" to LoremIpsum(100).values.first().replace("\n", " "),
+    "Example question 4" to LoremIpsum(100).values.first().replace("\n", " "),
+)
