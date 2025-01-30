@@ -14,9 +14,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -302,3 +305,28 @@ private fun AnimationSpecVisPreview() {
     }
 }
 
+@Preview
+@Composable
+private fun RestartableAnimationSpecVisPreview() {
+    var shouldRestart by remember { mutableStateOf(false) }
+    var isVisible by remember { mutableStateOf(true) }
+    LaunchedEffect(shouldRestart, isVisible) {
+        when {
+            shouldRestart && isVisible -> isVisible = false
+            shouldRestart && !isVisible -> {
+                withFrameNanos {  }
+                isVisible = true
+                shouldRestart = false
+            }
+        }
+    }
+    Box {
+        if (isVisible) {
+            AnimationSpecVisPreview()
+        }
+        Button(onClick = { shouldRestart = true }, modifier = Modifier.align(Alignment.BottomEnd)) {
+            Text("Restart")
+        }
+    }
+
+}
