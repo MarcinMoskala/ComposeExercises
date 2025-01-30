@@ -23,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationSpecApi::class)
 @Preview(device = "spec:parent=pixel_tablet,orientation=portrait")
@@ -107,37 +109,41 @@ private fun AnimationSpecVisPreview() {
     var x6History by remember { mutableStateOf(listOf<Float>()) }
     var x7History by remember { mutableStateOf(listOf<Float>()) }
     var x8History by remember { mutableStateOf(listOf<Float>()) }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        target = screenWidth.toFloat() - 200
-        val x1HistoryTemp = mutableListOf<Float>()
-        val x2HistoryTemp = mutableListOf<Float>()
-        val x3HistoryTemp = mutableListOf<Float>()
-        val x4HistoryTemp = mutableListOf<Float>()
-        val x5HistoryTemp = mutableListOf<Float>()
-        val x6HistoryTemp = mutableListOf<Float>()
-        val x7HistoryTemp = mutableListOf<Float>()
-        val x8HistoryTemp = mutableListOf<Float>()
-        repeat(200) {
-            x1HistoryTemp += x1
-            x2HistoryTemp += x2
-            x3HistoryTemp += x3
-            x4HistoryTemp += x4
-            x5HistoryTemp += x5
-            x6HistoryTemp += x6
-            x7HistoryTemp += x7
-            x8HistoryTemp += x8
-            delay(10)
+        scope.launch {
+            delay(1000)
+            target = screenWidth.toFloat() - 200
+            val x1HistoryTemp = mutableListOf<Float>()
+            val x2HistoryTemp = mutableListOf<Float>()
+            val x3HistoryTemp = mutableListOf<Float>()
+            val x4HistoryTemp = mutableListOf<Float>()
+            val x5HistoryTemp = mutableListOf<Float>()
+            val x6HistoryTemp = mutableListOf<Float>()
+            val x7HistoryTemp = mutableListOf<Float>()
+            val x8HistoryTemp = mutableListOf<Float>()
+            repeat(200) {
+                x1HistoryTemp += x1
+                x2HistoryTemp += x2
+                x3HistoryTemp += x3
+                x4HistoryTemp += x4
+                x5HistoryTemp += x5
+                x6HistoryTemp += x6
+                x7HistoryTemp += x7
+                x8HistoryTemp += x8
+                delay(10)
+            }
+            x1History = x1HistoryTemp
+            x2History = x2HistoryTemp
+            x3History = x3HistoryTemp
+            x4History = x4HistoryTemp
+            x5History = x5HistoryTemp
+            x6History = x6HistoryTemp
+            x7History = x7HistoryTemp
+            x8History = x8HistoryTemp
+            drawing = false
         }
-        x1History = x1HistoryTemp
-        x2History = x2HistoryTemp
-        x3History = x3HistoryTemp
-        x4History = x4HistoryTemp
-        x5History = x5HistoryTemp
-        x6History = x6HistoryTemp
-        x7History = x7HistoryTemp
-        x8History = x8HistoryTemp
-        drawing = false
     }
     Box(
         contentAlignment = Alignment.TopCenter,
@@ -157,7 +163,7 @@ private fun AnimationSpecVisPreview() {
                     drawCircle(
                         Color.Black,
                         radius = 5f,
-                        center = Offset(x, 720f)
+                        center = Offset(x, 240f)
                     )
                 }
                 x2History.forEachIndexed { index, x ->
