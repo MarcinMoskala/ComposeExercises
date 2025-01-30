@@ -13,17 +13,6 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="RestartableAnimationSpecVisPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-01-30T11:30:47.916337Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/mm/.android/avd/Pixel_Tablet_API_34.avd" />
-            </handle>
-          </Target>
-        </DropdownSelection>
-        <DialogSelection />
-      </SelectionState>
       <SelectionState runConfigName="CustomAnimateContentSizeExample">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2025-01-30T12:12:24.974536Z">
@@ -58,6 +47,9 @@
         <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="AnimateNumber">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="TripleOrbitLoadingAnimationPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
