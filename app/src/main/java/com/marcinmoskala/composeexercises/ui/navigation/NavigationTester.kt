@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +27,8 @@ import com.marcinmoskala.composeexercises.ui.navigation.exercise.ButtonConfig
 @SuppressLint("RestrictedApi")
 fun NavigationTester() {
     val navController = rememberNavController()
-    fun backStackAsText(): String = navController.currentBackStack.value.mapNotNull { it.destination.route }.joinToString("\n")
+    fun backStackAsText(): String =
+        navController.currentBackStack.value.mapNotNull { it.destination.route }.joinToString("\n")
 
     NavHost(navController, startDestination = "A") {
         composable("A") {
@@ -40,11 +43,13 @@ fun NavigationTester() {
             )
         }
         composable("B") {
+            val counter = rememberSaveable { mutableStateOf(0) }
             GenericScreen(
-                title = "Screen B",
+                title = "Screen B (${counter.value})",
                 text = backStackAsText(),
                 buttons = listOf(
                     ButtonConfig("Go to C") {
+                        counter.value++
                         navController.navigate("C")
                     }
                 )
@@ -55,8 +60,14 @@ fun NavigationTester() {
                 title = "Screen C",
                 text = backStackAsText(),
                 buttons = listOf(
-                    ButtonConfig("Go to D") {
-                        navController.navigate("D")
+                    ButtonConfig("Go to B") {
+                        navController.navigate("B")
+                    },
+                    ButtonConfig("Go to B restore") {
+                        navController.navigate("B") {
+                            popUpTo("B") { inclusive = true }
+                            restoreState = true
+                        }
                     }
                 )
             )
@@ -79,6 +90,11 @@ fun NavigationTester() {
                 buttons = listOf(
                     ButtonConfig("Go to F") {
                         navController.navigate("F")
+                    },
+                    ButtonConfig("Go to F restore") {
+                        navController.navigate("F") {
+                            restoreState = true
+                        }
                     }
                 )
             )
