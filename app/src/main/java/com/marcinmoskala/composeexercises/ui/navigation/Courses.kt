@@ -18,10 +18,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +38,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.marcinmoskala.composeexercises.R
 import com.marcinmoskala.composeexercises.loremIpsum
 import kotlinx.coroutines.delay
@@ -107,7 +116,7 @@ sealed interface Screen {
 //fun CoursesApp() {
 //    val navController = rememberNavController()
 //    NavHost(
-//        navController = navController,
+//        navController = navController,`
 //        startDestination = Screen.Courses
 //    ) {
 //        composable<Screen.Courses>() {
@@ -217,6 +226,79 @@ sealed interface Screen {
 //    previousBackStackEntry?.savedStateHandle?.let(builder)
 //    popBackStack()
 //}
+
+sealed class OtherRoutes {
+    @Serializable
+    data class LessonSuccessDialog(val lessonName: String, val lessonId: Int) : OtherRoutes()
+
+    @Serializable
+    data object TakePhotoActivity : OtherRoutes()
+}
+
+// dialog, activity, and fragment routes
+@Preview
+@Composable
+fun CoursesApp() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Courses
+    ) {
+        composable<Screen.Courses>() {
+            CoursesScreen(
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Screen.Course(courseId))
+                }
+            )
+        }
+        composable<Screen.Course> {
+            val route: Screen.Course = it.toRoute()
+            CourseScreen(courseId = route.courseId,
+                onNavigateToLesson = { lessonId ->
+                    navController.navigate(Screen.Lesson(route.courseId, lessonId))
+                }
+            )
+        }
+        composable<Screen.Lesson> {
+            val route: Screen.Lesson = it.toRoute()
+            LessonScreen(
+                courseId = route.courseId, lessonId = route.lessonId,
+                onNext = {
+                    navController.navigate(
+                        Screen.Lesson(
+                            route.courseId,
+                            route.lessonId + 1
+                        )
+                    )
+                },
+                onPrev = {
+                    navController.navigate(
+                        Screen.Lesson(
+                            route.courseId,
+                            route.lessonId - 1
+                        )
+                    )
+                },
+                onComplete = {
+                    navController.navigate(OtherRoutes.LessonSuccessDialog("Lesson ${route.lessonId}", route.lessonId))
+                }
+            )
+        }
+        dialog<OtherRoutes.LessonSuccessDialog> { backStackEntry ->
+            val route: OtherRoutes.LessonSuccessDialog = backStackEntry.toRoute()
+            LessonSuccessDialog(
+                dialogTitle = "Lesson completed",
+                dialogSubTitle = "Do you want to continue to the next lesson?",
+                onDismissRequest = {
+                    navController.popBackStack()
+                },
+                onConfirmation = {
+                    navController.navigate(Screen.Lesson(route.lessonName, route.lessonId + 1))
+                }
+            )
+        }
+    }
+}
 
 @Composable
 private fun CoursesScreen(onNavigateToCourse: (String) -> Unit) {
@@ -337,6 +419,7 @@ private fun LessonScreen(
     onNext: (() -> Unit)? = null,
     onPrev: (() -> Unit)? = null,
     onComplete: (() -> Unit)? = null,
+    onBackToCourses: (() -> Unit)? = null,
 ) {
     Box(
         modifier = Modifier
@@ -349,6 +432,14 @@ private fun LessonScreen(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            onBackToCourses?.let {
+                Button(
+                    onClick = onBackToCourses,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                ) {
+                    Text("Not whar you looked for? Go back to courses!")
+                }
+            }
             Text(
                 text = "Lesson $lessonId from $courseId",
                 fontSize = 28.sp,
@@ -392,6 +483,43 @@ private fun LessonScreen(
     }
 }
 
+@Composable
+fun LessonSuccessDialog(
+    dialogTitle: String,
+    dialogSubTitle: String,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+) {
+    AlertDialog(
+        modifier = Modifier.fillMaxWidth(0.92f),
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = true,
+            dismissOnClickOutside = true,
+            dismissOnBackPress = true
+        ),
+        shape = RoundedCornerShape(20.dp),
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirmation() }) {
+                Text(text = "Yes")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(text = "Cancel")
+            }
+        },
+        title = {
+            Text(text = dialogTitle, fontSize = 18.sp)
+        },
+        text = {
+            Text(text = dialogSubTitle)
+        })
+}
+
 @Preview
 @Composable
 private fun CoursesScreenPreview() {
@@ -417,6 +545,7 @@ private fun LessonScreenPreview() {
         lessonId = 123,
         onNext = {},
         onPrev = {},
-        onComplete = {}
+        onComplete = {},
+        onBackToCourses = {}
     )
 }
