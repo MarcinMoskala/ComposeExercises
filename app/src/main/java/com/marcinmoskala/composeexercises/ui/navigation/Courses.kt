@@ -1,5 +1,9 @@
 package com.marcinmoskala.composeexercises.ui.navigation
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleIn
@@ -35,15 +39,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.marcinmoskala.composeexercises.R
 import com.marcinmoskala.composeexercises.loremIpsum
 import kotlinx.coroutines.delay
@@ -232,73 +232,93 @@ sealed class OtherRoutes {
     data class LessonSuccessDialog(val lessonName: String, val lessonId: Int) : OtherRoutes()
 
     @Serializable
-    data object TakePhotoActivity : OtherRoutes()
+    data object Settings : OtherRoutes()
 }
 
-// dialog, activity, and fragment routes
-@Preview
-@Composable
-fun CoursesApp() {
-    val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Courses
-    ) {
-        composable<Screen.Courses>() {
-            CoursesScreen(
-                onNavigateToCourse = { courseId ->
-                    navController.navigate(Screen.Course(courseId))
-                }
-            )
-        }
-        composable<Screen.Course> {
-            val route: Screen.Course = it.toRoute()
-            CourseScreen(courseId = route.courseId,
-                onNavigateToLesson = { lessonId ->
-                    navController.navigate(Screen.Lesson(route.courseId, lessonId))
-                }
-            )
-        }
-        composable<Screen.Lesson> {
-            val route: Screen.Lesson = it.toRoute()
-            LessonScreen(
-                courseId = route.courseId, lessonId = route.lessonId,
-                onNext = {
-                    navController.navigate(
-                        Screen.Lesson(
-                            route.courseId,
-                            route.lessonId + 1
-                        )
-                    )
-                },
-                onPrev = {
-                    navController.navigate(
-                        Screen.Lesson(
-                            route.courseId,
-                            route.lessonId - 1
-                        )
-                    )
-                },
-                onComplete = {
-                    navController.navigate(OtherRoutes.LessonSuccessDialog("Lesson ${route.lessonId}", route.lessonId))
-                }
-            )
-        }
-        dialog<OtherRoutes.LessonSuccessDialog> { backStackEntry ->
-            val route: OtherRoutes.LessonSuccessDialog = backStackEntry.toRoute()
-            LessonSuccessDialog(
-                dialogTitle = "Lesson completed",
-                dialogSubTitle = "Do you want to continue to the next lesson?",
-                onDismissRequest = {
-                    navController.popBackStack()
-                },
-                onConfirmation = {
-                    navController.navigate(Screen.Lesson(route.lessonName, route.lessonId + 1))
-                }
-            )
-        }
-    }
-}
+// dialog and activity destinations
+//@Preview
+//@Composable
+//fun CoursesApp() {
+//    val navController = rememberNavController()
+//    Box {
+//        NavHost(
+//            navController = navController,
+//            startDestination = Screen.Courses,
+//            modifier = Modifier.fillMaxSize()
+//        ) {
+//            composable<Screen.Courses>() {
+//                CoursesScreen(
+//                    onNavigateToCourse = { courseId ->
+//                        navController.navigate(Screen.Course(courseId))
+//                    }
+//                )
+//            }
+//            composable<Screen.Course> {
+//                val route: Screen.Course = it.toRoute()
+//                CourseScreen(courseId = route.courseId,
+//                    onNavigateToLesson = { lessonId ->
+//                        navController.navigate(Screen.Lesson(route.courseId, lessonId))
+//                    }
+//                )
+//            }
+//            composable<Screen.Lesson> {
+//                val route: Screen.Lesson = it.toRoute()
+//                LessonScreen(
+//                    courseId = route.courseId, lessonId = route.lessonId,
+//                    onNext = {
+//                        navController.navigate(
+//                            Screen.Lesson(
+//                                route.courseId,
+//                                route.lessonId + 1
+//                            )
+//                        )
+//                    },
+//                    onPrev = {
+//                        navController.navigate(
+//                            Screen.Lesson(
+//                                route.courseId,
+//                                route.lessonId - 1
+//                            )
+//                        )
+//                    },
+//                    onComplete = {
+//                        navController.navigate(
+//                            OtherRoutes.LessonSuccessDialog(
+//                                "Lesson ${route.lessonId}",
+//                                route.lessonId
+//                            )
+//                        )
+//                    }
+//                )
+//            }
+//            dialog<OtherRoutes.LessonSuccessDialog> { backStackEntry ->
+//                val route: OtherRoutes.LessonSuccessDialog = backStackEntry.toRoute()
+//                LessonSuccessDialog(
+//                    dialogTitle = "Lesson completed",
+//                    dialogSubTitle = "Do you want to continue to the next lesson?",
+//                    onDismissRequest = {
+//                        navController.popBackStack()
+//                    },
+//                    onConfirmation = {
+//                        navController.navigate(Screen.Lesson(route.lessonName, route.lessonId + 1))
+//                    }
+//                )
+//            }
+//            activity<OtherRoutes.Settings> {
+////                argument("EXTRA_NAME") { type = NavType.StringType }
+//                activityClass = SettingsActivity::class
+//            }
+//        }
+//        Icon(
+//            imageVector = Icons.Default.Settings,
+//            contentDescription = null,
+//            modifier = Modifier
+//                .size(48.dp)
+//                .align(Alignment.TopEnd)
+//                .clickable { navController.navigate(OtherRoutes.Settings) }
+//        )
+//    }
+//}
 
 @Composable
 private fun CoursesScreen(onNavigateToCourse: (String) -> Unit) {
@@ -345,7 +365,7 @@ private fun CourseItem(
 private fun CourseScreen(
     courseId: String,
     onNavigateToLesson: (Int) -> Unit,
-    isSuccess: Boolean = true
+    isSuccess: Boolean = false
 ) {
     var successVisible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
@@ -548,4 +568,25 @@ private fun LessonScreenPreview() {
         onComplete = {},
         onBackToCourses = {}
     )
+}
+
+class SettingsActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    "Settings",
+                    textAlign = TextAlign.Center,
+                    fontSize = 32.sp,
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
+            }
+        }
+    }
 }
