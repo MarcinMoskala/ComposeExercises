@@ -25,6 +25,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.navigation.SettingsActivity" />
+        <activity
+            android:name=".ui.navigation.SampleFragmentActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

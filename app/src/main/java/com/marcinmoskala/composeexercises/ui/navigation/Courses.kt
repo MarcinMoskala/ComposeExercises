@@ -1,6 +1,9 @@
 package com.marcinmoskala.composeexercises.ui.navigation
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -38,12 +41,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.marcinmoskala.composeexercises.R
 import com.marcinmoskala.composeexercises.loremIpsum
 import kotlinx.coroutines.delay
@@ -116,7 +122,7 @@ sealed interface Screen {
 //fun CoursesApp() {
 //    val navController = rememberNavController()
 //    NavHost(
-//        navController = navController,`
+//        navController = navController,
 //        startDestination = Screen.Courses
 //    ) {
 //        composable<Screen.Courses>() {
@@ -308,6 +314,9 @@ sealed class OtherRoutes {
 ////                argument("EXTRA_NAME") { type = NavType.StringType }
 //                activityClass = SettingsActivity::class
 //            }
+////            composable<OtherRoutes.Settings> {
+////                AndroidFragment<SettingsFragment>()
+////            }
 //        }
 //        Icon(
 //            imageVector = Icons.Default.Settings,
@@ -574,6 +583,40 @@ class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        setContent {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    "Settings",
+                    textAlign = TextAlign.Center,
+                    fontSize = 32.sp,
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
+            }
+        }
+    }
+}
+
+class SampleFragmentActivity : FragmentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+//            CoursesApp()
+        }
+    }
+}
+
+class SettingsFragment: Fragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        // Set the Compose content in the view
         setContent {
             Box(
                 modifier = Modifier.fillMaxSize(),
