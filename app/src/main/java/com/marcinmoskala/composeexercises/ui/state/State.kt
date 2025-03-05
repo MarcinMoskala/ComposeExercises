@@ -2,28 +2,33 @@
 
 package com.marcinmoskala.composeexercises.ui.state
 
-import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -31,50 +36,108 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.marcinmoskala.composeexercises.R
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import java.math.BigDecimal
 import kotlin.random.Random
 
-//@Composable
-//fun Toggle() {
-//    var checked = false // NO!
-//
-//    // ...
-//}
+@Preview
+@Composable
+fun Toggle() {
+    var checked = false
+//    var checked = remember { false }
+//    @SuppressLint("UnrememberedMutableState")
+//    var checked by mutableStateOf(false)
+//    var checked by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .clickable { checked = !checked }
+            .size(50.dp)
+            .border(3.dp, Color.Black)
+    ) {
+        if (checked) {
+            Icon(
+                painter = painterResource(id = R.drawable.heart_full),
+                contentDescription = null,
+                tint = Color.Red,
+                modifier = Modifier.padding(5.dp)
+            )
+        }
+    }
+}
 
 @Composable
 private fun CollectionProcessingChallengeScreen(level: Int) {
-    val difficulty = remember(level) { difficultyForLevel(level) }
-    val challenge = rememberSaveable(level) { generateChallenge(difficulty) }
+    // See logcat
+    val difficulty = difficultyForLevel(level)
+    val challenge = generateChallenge(difficulty)
+    // See how values on preview are not changing
+//    val difficulty = remember { difficultyForLevel(level) }
+//    val challenge = remember { generateChallenge(difficulty) }
+//    val difficulty = remember(level) { difficultyForLevel(level) }
+//    val challenge = remember(level) { generateChallenge(difficulty) }
+
+    val loaderY by rememberInfiniteTransition().animateFloat(
+        initialValue = -50f,
+        targetValue = 50f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000),
+            repeatMode = RepeatMode.Reverse
+        ),
+    )
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text("Level: $level Difficulty: ${difficulty.steps} Challenge: ${challenge.power}")
+        Image(
+            painter = painterResource(id = R.drawable.heart_full),
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .align(Center)
+                .offset(y = loaderY.dp)
+        )
+    }
+    // ...
+}
+
+@Preview
+@Composable
+private fun CollectionProcessingChallengeScreenPreview() {
+    CollectionProcessingChallengeScreen(1)
+}
+@Preview
+@Composable
+private fun CollectionProcessingChallengeScreenIncrementalLevelPreview() {
+    var level by remember { mutableIntStateOf(0) }
+    LaunchedEffect(level) {
+        delay(1000)
+        level++
+    }
+    CollectionProcessingChallengeScreen(level)
 }
 
 private fun difficultyForLevel(level: Int): Difficulty {
-    return Difficulty(10, listOf("Apple", "Banana"))
+    println("Calculating difficulty for level $level")
+    return Difficulty(level, listOf("Apple", "Banana"))
 }
 
 private data class Difficulty(val steps: Int, val fruits: List<String>)
 
-private data class Challenge(val text: String)
+private data class Challenge(val power: Int)
 
 private fun generateChallenge(difficulty: Difficulty): Challenge {
-    return Challenge("Challenge")
+    println("Generating challenge for $difficulty")
+    return Challenge(difficulty.steps)
 }
-
-@Composable
-private fun Toggle(text: String) {
-    var checked = remember { mutableStateOf(false) }
-
-    // ...
-}
-
 
 @Preview
 @Composable
@@ -123,7 +186,7 @@ private class ViewModel {
 private fun NarrowRecompositionScope(vm: ViewModel) {
 //    val isLoading = vm.isLoading.value // NO!
     val isLoading by vm.isLoading.collectAsStateWithLifecycle() // YES!
-    // ...
+    // ...\
 }
 
 @Preview
@@ -167,13 +230,15 @@ private fun NameBadge(profile: Profile) {
             model = imageUrl,
             contentDescription = null,
             placeholder = painterResource(id = R.drawable.avatar),
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier
+                .size(100.dp)
                 .clip(shape = CircleShape)
         )
     } else {
         Box(
             contentAlignment = Center,
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier
+                .size(100.dp)
                 .clip(shape = CircleShape)
                 .border(2.dp, Color.Black, CircleShape)
         ) {
@@ -189,7 +254,12 @@ private fun NameBadge(profile: Profile) {
 @Preview
 @Composable
 private fun NameBadgeImagePreview() {
-    NameBadge(Profile("Marcin Moskala", "https://lh3.googleusercontent.com/a-/AOh14GgT-nGHTlbxHpiPyUUhgruiheIEyBVEsCDWNdW0xA=s400-c"))
+    NameBadge(
+        Profile(
+            "Marcin Moskala",
+            "https://lh3.googleusercontent.com/a-/AOh14GgT-nGHTlbxHpiPyUUhgruiheIEyBVEsCDWNdW0xA=s400-c"
+        )
+    )
 }
 
 @Preview
@@ -216,12 +286,12 @@ private fun ChallengeScreen(level: Int) {
     if (loading) {
         Text("Loading...")
     } else {
-        Text(challenge!!.text)
+        Text(challenge!!.power.toString())
     }
 }
 
 private fun generateChallenge(steps: Int, fruits: List<String>): Challenge {
-    return Challenge("Challenge")
+    return Challenge(1234)
 }
 
 // 3

@@ -3,7 +3,6 @@ package com.marcinmoskala.composeexercises.ui.recomposition
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -14,48 +13,91 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
+private fun Parent() {
+    var counter by remember { mutableIntStateOf(0) }
+    SideEffect { println("Parent recompose") }
+    Child(counter = counter, onIncrement = { counter++ })
+}
+
+@Composable
+private fun Child(counter: Int, onIncrement: () -> Unit) {
+    SideEffect { println("Child recompose") }
+    Button(onClick = onIncrement) {
+        Text("Click me: ${counter}")
+    }
+}
+
+//@Preview
+//@Composable
+//private fun Parent() {
+//    var counter by remember { mutableIntStateOf(0) }
+//    SideEffect { println("Parent recompose") }
+//    Child(counter = {counter}, onIncrement = { counter++ })
+//}
+//
+//@Composable
+//private fun Child(counter: () -> Int, onIncrement: () -> Unit) {
+//    SideEffect { println("Child recompose") }
+//    Button(onClick = onIncrement) {
+//        Text("Click me: ${counter()}")
+//    }
+//}
+
+// ***
+
+@Preview
+@Composable
 private fun Recomposition() {
-    val value = remember { mutableStateOf(false) }
-    println("Recompose Recomposition")
-    Button(onClick = { value.value = !value.value }) {
+    var value by remember { mutableStateOf(false) }
+    SideEffect { println("Recompose Recomposition") }
+    Button(onClick = { value = !value }) {
         Text("Click me")
     }
 
     BodyReading(value)
-    BodyWriting(value)
+    BodyWriting { value = it }
 }
 
 @Composable
-private fun BodyReading(value: MutableState<Boolean>) {
-    println("Recompose BodyReading")
-    println("Value: ${value.value}")
+private fun BodyReading(value: Boolean) {
+    SideEffect { println("Recompose BodyReading") }
+    SideEffect { println("Value: $value") }
     Text(" ")
     Text(" ")
 }
 
 @Composable
-private fun BodyWriting(value: MutableState<Boolean>) {
-    println("Recompose BodyNotReading")
-    value.value = false
+private fun BodyWriting(setValue: (Boolean) -> Unit) {
+    SideEffect { println("Recompose BodyNotReading") }
+    setValue(false)
     Text(" ")
     Text(" ")
 }
-
+//@Preview
+//@Composable
+//private fun Recomposition() {
+//    val value = remember { mutableStateOf(false) }
+//    SideEffect { println("Recompose Recomposition") }
+//    Button(onClick = { value.value = !value.value }) {
+//        Text("Click me")
+//    }
 //
-
-@Preview
-@Composable
-private fun Parent() {
-    var counter by remember { mutableIntStateOf(0) }
-    SideEffect { println("Parent recompose") }
-    Child(counter = {counter}, onIncrement = { counter++ })
-}
-
-@Composable
-private fun Child(counter: () -> Int, onIncrement: () -> Unit) {
-    SideEffect { println("Child recompose") }
-    Button(onClick = onIncrement) {
-        Text("Click me: ${counter()}")
-    }
-}
-
+//    BodyReading(value)
+//    BodyWriting(value)
+//}
+//
+//@Composable
+//private fun BodyReading(value: MutableState<Boolean>) {
+//    SideEffect { println("Recompose BodyReading") }
+//    SideEffect { println("Value: ${value.value}") }
+//    Text(" ")
+//    Text(" ")
+//}
+//
+//@Composable
+//private fun BodyWriting(value: MutableState<Boolean>) {
+//    SideEffect { println("Recompose BodyNotReading") }
+//    value.value = false
+//    Text(" ")
+//    Text(" ")
+//}

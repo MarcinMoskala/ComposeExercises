@@ -27,8 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource.Companion.SideEffect
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -36,10 +34,10 @@ import kotlinx.coroutines.launch
 @Preview
 @Composable
 private fun DerivedState() {
-
     var state by remember { mutableStateOf("A") }
     var otherState by remember { mutableStateOf("A") }
 
+    // Only calculatedState gets recalculated when otherState changes
     val calculatedState = calculate("calculatedState", state)
     val recalculatedState = remember(state) { calculate("recalculatedState", state) }
     val derivedState by remember { derivedStateOf { calculate("derivedState", state) } }
@@ -51,11 +49,11 @@ private fun DerivedState() {
         Button(onClick = { otherState += "A" }) {
             Text("Change otherState")
         }
-//        Text("State: $state")
-//        Text("Derived state: $derivedState")
-//        Text("Calculated state: $calculatedState")
-//        Text("Recalculated state: $recalculatedState")
-//        Text("Other state: $otherState")
+        Text("State: $state")
+        Text("Derived state: $derivedState")
+        Text("Calculated state: $calculatedState")
+        Text("Recalculated state: $recalculatedState")
+        Text("Other state: $otherState")
     }
 }
 
@@ -73,8 +71,8 @@ private fun ThresholdExample() {
 
     Column {
         CreateUsernameCalculated(threshold.value)
-        CreateUsernameRemembered(threshold.value)
-        CreateUsernameDerived(threshold.value)
+//        CreateUsernameRemembered(threshold.value)
+//        CreateUsernameDerived(threshold.value)
 
         Button(onClick = { threshold.value++ }) {
             Text("Increase threshold")
@@ -91,7 +89,7 @@ private fun CreateUsernameCalculated(threshold: Int) {
     val enabled = username.value.length > threshold
     SideEffect { println("CreateUsernameCalculated recomposed") }
     Column {
-        SideEffect { println("CreateUsernameCalculated.Column recomposed") }
+        SideEffect { println("CreateUsernameCalculated.Column recomposed") } // Inlined, to delete
         Text("CreateUsernameCalculated")
         UsernameTextField(username)
         CreateButton { enabled }
@@ -104,7 +102,7 @@ private fun CreateUsernameRemembered(threshold: Int) {
     val enabled = remember(username.value, threshold) { username.value.length > threshold }
     SideEffect { println("CreateUsernameRemembered recomposed") }
     Column {
-        SideEffect { println("CreateUsernameRemembered.Column recomposed") }
+        SideEffect { println("CreateUsernameRemembered.Column recomposed") } // Inlined, to delete
         Text("CreateUsernameRemembered")
         UsernameTextField(username)
         CreateButton { enabled }
@@ -117,7 +115,7 @@ private fun CreateUsernameDerived(threshold: Int) {
     val enabled = remember(threshold) { derivedStateOf { username.value.length > threshold } }
     SideEffect { println("CreateUsernameDerived recomposed") }
     Column {
-        SideEffect { println("CreateUsernameDerived.Column recomposed") }
+        SideEffect { println("CreateUsernameDerived.Column recomposed") } // Inlined, to delete
         Text("CreateUsernameDerived")
         UsernameTextField(username)
         CreateButton { enabled.value }
