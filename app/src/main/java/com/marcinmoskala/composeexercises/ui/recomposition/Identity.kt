@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,20 +33,20 @@ import kotlin.random.Random
 @Preview
 @Composable
 private fun FlashcardApplication() {
-    var screen by rememberSaveable { mutableStateOf(Screen.FlashcardList) }
+    var screen by remember { mutableStateOf<FlashcardScreen>(FlashcardScreen.FlashcardList) }
     var flashcards by rememberSaveable { mutableStateOf(emptyList<Flashcard>()) }
-    when (screen) {
-        Screen.AddFlashcard -> AddFlashcardScreen(
+    when (val s = screen) {
+        is FlashcardScreen.AddFlashcard -> AddFlashcardScreen(
             addFlashcard = { question, answer ->
                 flashcards += Flashcard(question, answer)
             },
-            navigateToAddFlashcard = { screen = Screen.AddFlashcard },
-            navigateToFlashcardList = { screen = Screen.FlashcardList },
+            navigateToAddFlashcard = { screen = FlashcardScreen.AddFlashcard },
+            navigateToFlashcardList = { screen = FlashcardScreen.FlashcardList },
         )
 
-        Screen.FlashcardList -> FlashcardListScreen(
+        is FlashcardScreen.FlashcardList -> FlashcardListScreen(
             flashcards = flashcards,
-            navigateToAddFlashcard = { screen = Screen.AddFlashcard }
+            navigateToAddFlashcard = { screen = FlashcardScreen.AddFlashcard }
         )
     }
 
@@ -72,9 +71,10 @@ private fun FlashcardApplication() {
 //    }
 }
 
-private enum class Screen {
-    FlashcardList,
-    AddFlashcard,
+sealed class FlashcardScreen {
+    data object FlashcardList : FlashcardScreen()
+    data object AddFlashcard : FlashcardScreen()
+//    data class AddFlashcard(val number: Int) : FlashcardScreen()
 }
 
 private data class Flashcard(
@@ -206,7 +206,6 @@ private fun randomNumber() = (1..5).random()
 @Preview
 @Composable
 private fun A() {
-
     var a by remember { mutableStateOf(Random.nextBoolean()) }
     Column {
         DisplayRandomValue()
