@@ -1,8 +1,6 @@
 package com.marcinmoskala.composeexercises.ui.animations
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.scaleIn
@@ -30,9 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Preview
 @Composable
@@ -70,10 +70,38 @@ fun AnimatedVisibilityGame() {
     var switch1 by remember { mutableStateOf(true) }
     var switch2 by remember { mutableStateOf(true) }
     var switch3 by remember { mutableStateOf(true) }
+    var switch4 by remember { mutableStateOf(true) }
 
-    Column {
+    val condition1 = switch1 && switch2 || !switch3
+    val condition2 = !switch1 || switch4 && switch3
+    val condition3 = switch4 || switch2 && switch1
+    val condition4 = switch4 && switch3 || switch2
+
+    val allSatisfied = !(condition1 || condition2 || condition3 || condition4)
+
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            "Use switches to make all boxes invisible",
+            textAlign = TextAlign.Center,
+            fontSize = 30.sp,
+            modifier = Modifier.padding(16.dp)
+        )
+        if (allSatisfied) {
+            Text(
+                "Success!",
+                color = Color.Green,
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp,
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
         Row {
-            AnimatedVisibility(switch1 && switch2 || !switch3) {
+            AnimatedVisibility(condition1) {
                 Text(
                     "D1",
                     modifier = Modifier
@@ -81,7 +109,7 @@ fun AnimatedVisibilityGame() {
                         .background(Color.Red)
                 )
             }
-            AnimatedVisibility(!switch1 || switch2 && switch3) {
+            AnimatedVisibility(condition2) {
                 Text(
                     "D2",
                     modifier = Modifier
@@ -91,7 +119,7 @@ fun AnimatedVisibilityGame() {
             }
         }
         Row {
-            AnimatedVisibility(!switch1 || switch2) {
+            AnimatedVisibility(condition3) {
                 Text(
                     "D3",
                     modifier = Modifier
@@ -99,7 +127,7 @@ fun AnimatedVisibilityGame() {
                         .background(Color.Green)
                 )
             }
-            AnimatedVisibility(switch2 || !switch3) {
+            AnimatedVisibility(condition4) {
                 Text(
                     "D4",
                     modifier = Modifier
@@ -134,6 +162,15 @@ fun AnimatedVisibilityGame() {
             Text(
                 "Switch 3",
                 color = if (switch3) Color.White else Color.Black
+            )
+        }
+        Button(
+            onClick = { switch4 = !switch4 },
+            colors = buttonColors(containerColor = if (switch4) Color.Unspecified else Color.Transparent)
+        ) {
+            Text(
+                "Switch 4",
+                color = if (switch4) Color.White else Color.Black
             )
         }
     }
