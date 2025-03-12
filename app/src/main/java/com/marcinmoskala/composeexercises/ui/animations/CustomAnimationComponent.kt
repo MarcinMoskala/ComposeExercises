@@ -45,11 +45,7 @@ private fun MyAnimatedVisibility(
     visible: Boolean,
     content: @Composable () -> Unit,
 ) {
-    AnimatedContent(targetState = visible) { targetVisible ->
-        if (targetVisible) {
-            content()
-        }
-    }
+    content()
 }
 
 @Composable
@@ -57,12 +53,7 @@ private fun MyCrossfade(
     targetState: Int,
     content: @Composable (Int) -> Unit,
 ) {
-    AnimatedContent(
-        targetState = targetState,
-        transitionSpec = { fadeIn() togetherWith fadeOut() }
-    ) { page ->
-        content(page)
-    }
+    content(targetState)
 }
 
 @Composable
@@ -70,14 +61,7 @@ private fun MyPagerlike(
     page: Int,
     content: @Composable (Int) -> Unit,
 ) {
-    AnimatedContent(
-        targetState = page,
-        transitionSpec = {
-            slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
-        }
-    ) { page ->
-        content(page)
-    }
+    content(page)
 }
 
 @Preview

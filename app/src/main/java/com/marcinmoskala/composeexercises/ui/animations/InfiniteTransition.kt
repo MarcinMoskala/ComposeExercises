@@ -1,79 +1,36 @@
-package com.marcinmoskala.composeexercises.ui.animations
-
-import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-private const val startRotationInner = 90f
-private const val startRotationMiddle = 135f
-
 @Preview
 @Composable
-fun TripleOrbitLoadingAnimation(modifier: Modifier = Modifier) {
-    val infiniteTransition = rememberInfiniteTransition(label = "infinite transition")
-    val rotation by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
+private fun InfiniteTransitionExample() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val color by infiniteTransition.animateColor(
+        initialValue = Color.Red,
+        targetValue = Color.Green,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000),
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
         ),
-        label = "rotation animation"
+        label = "color"
     )
-    Box(
-        modifier = modifier
-            .padding(16.dp)
-            .size(40.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            strokeWidth = 1.dp,
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    rotationZ = rotation
-                }
-        )
-        CircularProgressIndicator(
-            strokeWidth = 1.dp,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(7.5.dp)
-                .rotate(rotation)
-                .graphicsLayer {
-                    rotationZ = rotation + startRotationMiddle
-                }
-        )
-        CircularProgressIndicator(
-            strokeWidth = 1.dp,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp)
-                .graphicsLayer {
-                    rotationZ = rotation + startRotationInner
-                }
-        )
-    }
-}
 
-@Preview
-@Composable
-private fun TripleOrbitLoadingAnimationPreview() {
-    TripleOrbitLoadingAnimation(
+    Box(
         modifier = Modifier
             .size(100.dp)
+            .background(color = color)
     )
 }
