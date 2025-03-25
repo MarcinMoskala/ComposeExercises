@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="ExampleMovableContent">
+      <SelectionState runConfigName="ComposeInXmlActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="GroceryItemPreview">
+      <SelectionState runConfigName="ViewInCompose">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="GroceryListPreview">
+      <SelectionState runConfigName="ComponentUsingFragment">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="ChatScreenPreview">
+      <SelectionState runConfigName="FragmentInComposeActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MutableStateSample">
+      <SelectionState runConfigName="FragmentInComposeActivity (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
