@@ -7,6 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -53,9 +54,7 @@ fun PersistentListSample() {
             Text("Add Item")
         }
         Column {
-            list.forEach {
-                Text(it)
-            }
+            ItemsColumn(list)
         }
     }
 }
@@ -82,9 +81,7 @@ private fun MutableStateChild(
     listState: MutableState<PersistentList<String>>
 ) {
     Column {
-        listState.value.forEach {
-            Text(it)
-        }
+        ItemsColumn(listState.value)
     }
 }
 
@@ -110,7 +107,15 @@ private fun MutableLambda(
     list: () -> PersistentList<String>
 ) {
     Column {
-        list().forEach {
+        ItemsColumn(list())
+    }
+}
+
+@Composable
+private fun ItemsColumn(list: PersistentList<String>) {
+    SideEffect { println("ItemsColumn recomposed with $list") }
+    Column {
+        list.forEach {
             Text(it)
         }
     }

@@ -83,7 +83,7 @@ private fun CollectionProcessingChallengeScreen(level: Int) {
 //    val difficulty = remember { difficultyForLevel(level) }
 //    val challenge = remember { generateChallenge(difficulty) }
 //    val difficulty = remember(level) { difficultyForLevel(level) }
-//    val challenge = remember(level) { generateChallenge(difficulty) }
+//    val challenge = remember(difficulty) { generateChallenge(difficulty) }
 
     val loaderY by rememberInfiniteTransition().animateFloat(
         initialValue = -50f,
@@ -127,6 +127,7 @@ private fun CollectionProcessingChallengeScreenIncrementalLevelPreview() {
 
 private fun difficultyForLevel(level: Int): Difficulty {
     println("Calculating difficulty for level $level")
+    Thread.sleep(100)
     return Difficulty(level, listOf("Apple", "Banana"))
 }
 
@@ -136,6 +137,7 @@ private data class Challenge(val power: Int)
 
 private fun generateChallenge(difficulty: Difficulty): Challenge {
     println("Generating challenge for $difficulty")
+    Thread.sleep(100)
     return Challenge(difficulty.steps)
 }
 
@@ -155,20 +157,22 @@ private fun StateExamples() {
 }
 
 class StateHolder {
-    var state = mutableStateOf("")
+    var state1 = mutableStateOf("")
+    var state2 = mutableStateOf("")
+    var state3 = mutableStateOf("")
 }
 
 @Preview
 @Composable
 private fun StateExamples2(holder: StateHolder = remember { StateHolder() }) {
     Column {
-        val state1 = holder.state
+        val state1 = holder.state1
         TextField(value = state1.value, onValueChange = { state1.value = it })
 
-        var state2 by holder.state
+        var state2 by holder.state2
         TextField(value = state2, onValueChange = { state2 = it })
 
-        val (value3, setValue3) = holder.state
+        val (value3, setValue3) = holder.state3
         TextField(value = value3, onValueChange = setValue3)
     }
 }
@@ -186,7 +190,7 @@ private class ViewModel {
 private fun NarrowRecompositionScope(vm: ViewModel) {
 //    val isLoading = vm.isLoading.value // NO!
     val isLoading by vm.isLoading.collectAsStateWithLifecycle() // YES!
-    // ...\
+    // ...
 }
 
 @Preview
@@ -353,8 +357,9 @@ private fun getIntFlow() = flow {
     emit(Random.nextInt())
 }
 
+@Preview
 @Composable
-private fun dev() {
+private fun Dev() {
     val i by getIntFlow().collectAsState(0)
     Text("Hello: $i !")
 }

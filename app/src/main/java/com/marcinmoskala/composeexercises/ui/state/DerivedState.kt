@@ -85,7 +85,7 @@ private fun ThresholdExample() {
 
 @Composable
 private fun CreateUsernameCalculated(threshold: Int) {
-    val username = remember { mutableStateOf("User") }
+    val username = remember { mutableStateOf("") }
     val enabled = username.value.length > threshold
     SideEffect { println("CreateUsernameCalculated recomposed") }
     Column {
@@ -98,7 +98,7 @@ private fun CreateUsernameCalculated(threshold: Int) {
 
 @Composable
 private fun CreateUsernameRemembered(threshold: Int) {
-    val username = remember { mutableStateOf("User") }
+    val username = remember { mutableStateOf("") }
     val enabled = remember(username.value, threshold) { username.value.length > threshold }
     SideEffect { println("CreateUsernameRemembered recomposed") }
     Column {
@@ -111,7 +111,7 @@ private fun CreateUsernameRemembered(threshold: Int) {
 
 @Composable
 private fun CreateUsernameDerived(threshold: Int) {
-    val username = remember { mutableStateOf("User") }
+    val username = remember { mutableStateOf("") }
     val enabled = remember(threshold) { derivedStateOf { username.value.length > threshold } }
     SideEffect { println("CreateUsernameDerived recomposed") }
     Column {
@@ -186,6 +186,7 @@ fun taxRateForCountry(country: Country): Double {
 }
 
 // 2
+@Preview
 @Composable
 private fun LazyListWithScrollToTop() {
     val scope = rememberCoroutineScope()

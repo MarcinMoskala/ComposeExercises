@@ -23,6 +23,7 @@ private fun Parent() {
 private fun Child(counter: Int, onIncrement: () -> Unit) {
     SideEffect { println("Child recompose") }
     Button(onClick = onIncrement) {
+        SideEffect { println("Button recompose") }
         Text("Click me: ${counter}")
     }
 }
