@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 
 sealed class ArticleParagraph {
-    data class Text(
+    data class TextParagraph(
         val text: String,
         val isTitle: Boolean = false
     ) : ArticleParagraph()
@@ -58,7 +58,7 @@ fun ArticleScreen(content: PersistentList<ArticleParagraph>) {
     ) {
         items(content) { paragraph ->
             when (paragraph) {
-                is ArticleParagraph.Text -> ArticleParagraph(paragraph)
+                is ArticleParagraph.TextParagraph -> ArticleParagraph(paragraph)
                 is ArticleParagraph.Image -> { /* TODO: Use ImageFragment */ }
                 is ArticleParagraph.Ad -> { /* TODO: Use AdView */ }
             }
@@ -67,7 +67,7 @@ fun ArticleScreen(content: PersistentList<ArticleParagraph>) {
 }
 
 @Composable
-private fun ArticleParagraph(paragraph: ArticleParagraph.Text) {
+private fun ArticleParagraph(paragraph: ArticleParagraph.TextParagraph) {
     Text(
         paragraph.text,
         fontSize = if (paragraph.isTitle) 46.sp else 20.sp,
@@ -188,26 +188,26 @@ fun ArticleScreenPreview() {
     val context = androidx.compose.ui.platform.LocalContext.current
     val articles = persistentListOf(
         persistentListOf(
-            ArticleParagraph.Text("Hello", isTitle = true),
+            ArticleParagraph.TextParagraph("Hello", isTitle = true),
             ArticleParagraph.Image("https://example.com/image.jpg"),
-            ArticleParagraph.Text(loremIpsum(10)),
+            ArticleParagraph.TextParagraph(loremIpsum(10)),
             ArticleParagraph.Ad(
                 text = "Ad",
                 imageUrl = "https://example.com/ad.jpg",
                 onClick = { Toast.makeText(context, "Ad clicked", Toast.LENGTH_SHORT).show() }
             ),
-            ArticleParagraph.Text(loremIpsum(40))
+            ArticleParagraph.TextParagraph(loremIpsum(40))
         ),
         persistentListOf(
-            ArticleParagraph.Text("World", isTitle = true),
+            ArticleParagraph.TextParagraph("World", isTitle = true),
             ArticleParagraph.Image("https://example.com/image2.jpg"),
-            ArticleParagraph.Text(loremIpsum(40)),
+            ArticleParagraph.TextParagraph(loremIpsum(40)),
             ArticleParagraph.Ad(
                 text = "Ad2",
                 imageUrl = "https://example.com/ad2.jpg",
                 onClick = { Toast.makeText(context, "Ad2 clicked", Toast.LENGTH_SHORT).show() }
             ),
-            ArticleParagraph.Text(loremIpsum(80))
+            ArticleParagraph.TextParagraph(loremIpsum(80))
         )
     )
     var currentArticle by remember { mutableStateOf(0) }
