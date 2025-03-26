@@ -189,22 +189,22 @@ fun ArticleScreenPreview() {
     val articles = persistentListOf(
         persistentListOf(
             ArticleParagraph.TextParagraph("Hello", isTitle = true),
-            ArticleParagraph.Image("https://example.com/image.jpg"),
+            ArticleParagraph.Image("https://picsum.photos/400/200"),
             ArticleParagraph.TextParagraph(loremIpsum(10)),
             ArticleParagraph.Ad(
                 text = "Ad",
-                imageUrl = "https://example.com/ad.jpg",
+                imageUrl = "https://picsum.photos/400/200",
                 onClick = { Toast.makeText(context, "Ad clicked", Toast.LENGTH_SHORT).show() }
             ),
             ArticleParagraph.TextParagraph(loremIpsum(40))
         ),
         persistentListOf(
             ArticleParagraph.TextParagraph("World", isTitle = true),
-            ArticleParagraph.Image("https://example.com/image2.jpg"),
+            ArticleParagraph.Image("https://picsum.photos/400/200"),
             ArticleParagraph.TextParagraph(loremIpsum(40)),
             ArticleParagraph.Ad(
                 text = "Ad2",
-                imageUrl = "https://example.com/ad2.jpg",
+                imageUrl = "https://picsum.photos/400/200",
                 onClick = { Toast.makeText(context, "Ad2 clicked", Toast.LENGTH_SHORT).show() }
             ),
             ArticleParagraph.TextParagraph(loremIpsum(80))
