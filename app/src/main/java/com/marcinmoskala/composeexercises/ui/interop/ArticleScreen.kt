@@ -59,11 +59,8 @@ fun ArticleScreen(content: PersistentList<ArticleParagraph>) {
         items(content) { paragraph ->
             when (paragraph) {
                 is ArticleParagraph.Text -> ArticleParagraph(paragraph)
-                is ArticleParagraph.Image -> { /* TODO: Use ImageFragment */
-                }
-
-                is ArticleParagraph.Ad -> { /* TODO: Use AdView */
-                }
+                is ArticleParagraph.Image -> { /* TODO: Use ImageFragment */ }
+                is ArticleParagraph.Ad -> { /* TODO: Use AdView */ }
             }
         }
     }
