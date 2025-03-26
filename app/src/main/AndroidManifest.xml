@@ -31,6 +31,9 @@
         <activity
             android:name=".ui.basics.MainActivity"
             android:exported="true" />
+        <activity
+            android:name=".ui.basics.themes.ThemedActivity"
+            android:exported="true" />
         <activity android:name=".ui.navigation.SettingsActivity" />
         <activity
             android:name=".ui.navigation.SampleFragmentActivity"
