@@ -26,7 +26,7 @@ class ContactsActivity : ComponentActivity() {
 }
 
 private data class Contact(
-    val fillName: String,
+    val fullName: String,
     val label: String,
 )
 
