@@ -157,9 +157,9 @@ private fun StateExamples() {
 }
 
 class StateHolder {
-    var state1 = mutableStateOf("")
-    var state2 = mutableStateOf("")
-    var state3 = mutableStateOf("")
+    val state1 = mutableStateOf("")
+    val state2 = mutableStateOf("")
+    val state3 = mutableStateOf("")
 }
 
 @Preview
@@ -258,12 +258,15 @@ private fun NameBadge(profile: Profile) {
 @Preview
 @Composable
 private fun NameBadgeImagePreview() {
-    NameBadge(
-        Profile(
-            "Marcin Moskala",
-            "https://lh3.googleusercontent.com/a-/AOh14GgT-nGHTlbxHpiPyUUhgruiheIEyBVEsCDWNdW0xA=s400-c"
+    Column {
+        NameBadge(
+            Profile(
+                "Marcin Moskala",
+                "https://lh3.googleusercontent.com/a-/AOh14GgT-nGHTlbxHpiPyUUhgruiheIEyBVEsCDWNdW0xA=s400-c"
+            )
         )
-    )
+        NameBadge(Profile("Marcin Moskala", null))
+    }
 }
 
 @Preview
@@ -294,8 +297,15 @@ private fun ChallengeScreen(level: Int) {
     }
 }
 
-private fun generateChallenge(steps: Int, fruits: List<String>): Challenge {
+private suspend fun generateChallenge(steps: Int, fruits: List<String>): Challenge {
+    delay(4000)
     return Challenge(1234)
+}
+
+@Preview
+@Composable
+private fun ChallengeScreenPreview() {
+    ChallengeScreen(1)
 }
 
 // 3

@@ -63,11 +63,8 @@ fun NavigationTester() {
                     ButtonConfig("Go to B") {
                         navController.navigate("B")
                     },
-                    ButtonConfig("Go to B restore") {
-                        navController.navigate("B") {
-                            popUpTo("B") { inclusive = true }
-                            restoreState = true
-                        }
+                    ButtonConfig("Go to A") {
+                        navController.navigate("A")
                     }
                 )
             )

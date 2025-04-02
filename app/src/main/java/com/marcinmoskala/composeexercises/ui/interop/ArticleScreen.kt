@@ -41,7 +41,8 @@ sealed class ArticleParagraph {
     ) : ArticleParagraph()
 
     data class Image(
-        val url: String
+        val url: String,
+        val caption: String,
     ) : ArticleParagraph()
 
     data class Ad(
@@ -177,8 +178,8 @@ class ImageFragment : Fragment() {
     }
 
     companion object {
-        private const val ARG_IMAGE_URL = "imageUrl"
-        private const val ARG_CAPTION = "caption"
+        const val ARG_IMAGE_URL = "imageUrl"
+        const val ARG_CAPTION = "caption"
     }
 }
 
@@ -189,22 +190,22 @@ fun ArticleScreenPreview() {
     val articles = persistentListOf(
         persistentListOf(
             ArticleParagraph.TextParagraph("Hello", isTitle = true),
-            ArticleParagraph.Image("https://picsum.photos/400/200"),
+            ArticleParagraph.Image("https://picsum.photos/400/300", "Image 1"),
             ArticleParagraph.TextParagraph(loremIpsum(10)),
             ArticleParagraph.Ad(
                 text = "Ad",
-                imageUrl = "https://picsum.photos/400/200",
+                imageUrl = "https://picsum.photos/400/400",
                 onClick = { Toast.makeText(context, "Ad clicked", Toast.LENGTH_SHORT).show() }
             ),
             ArticleParagraph.TextParagraph(loremIpsum(40))
         ),
         persistentListOf(
             ArticleParagraph.TextParagraph("World", isTitle = true),
-            ArticleParagraph.Image("https://picsum.photos/400/200"),
+            ArticleParagraph.Image("https://picsum.photos/400/500", "Image 2"),
             ArticleParagraph.TextParagraph(loremIpsum(40)),
             ArticleParagraph.Ad(
                 text = "Ad2",
-                imageUrl = "https://picsum.photos/400/200",
+                imageUrl = "https://picsum.photos/400/350",
                 onClick = { Toast.makeText(context, "Ad2 clicked", Toast.LENGTH_SHORT).show() }
             ),
             ArticleParagraph.TextParagraph(loremIpsum(80))

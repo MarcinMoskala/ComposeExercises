@@ -130,7 +130,6 @@ private fun AddItemDialog(
             Button(
                 onClick = {
                     onAddItem(text)
-                    onDismiss()
                 }
             ) {
                 Text("Add")
