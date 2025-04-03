@@ -16,7 +16,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -85,47 +84,41 @@ private fun ThresholdExample() {
 
 @Composable
 private fun CreateUsernameCalculated(threshold: Int) {
-    val username = remember { mutableStateOf("") }
-    val enabled = username.value.length > threshold
+    var username by remember { mutableStateOf("") }
+    val enabled = username.length > threshold
     SideEffect { println("CreateUsernameCalculated recomposed") }
     Column {
-        SideEffect { println("CreateUsernameCalculated.Column recomposed") } // Inlined, to delete
-        Text("CreateUsernameCalculated")
-        UsernameTextField(username)
+        UsernameTextField({ username }, { username = it })
         CreateButton { enabled }
     }
 }
 
 @Composable
 private fun CreateUsernameRemembered(threshold: Int) {
-    val username = remember { mutableStateOf("") }
-    val enabled = remember(username.value, threshold) { username.value.length > threshold }
+    var username by remember { mutableStateOf("") }
+    val enabled = remember(username, threshold) { username.length > threshold }
     SideEffect { println("CreateUsernameRemembered recomposed") }
     Column {
-        SideEffect { println("CreateUsernameRemembered.Column recomposed") } // Inlined, to delete
-        Text("CreateUsernameRemembered")
-        UsernameTextField(username)
+        UsernameTextField({ username }, { username = it })
         CreateButton { enabled }
     }
 }
 
 @Composable
 private fun CreateUsernameDerived(threshold: Int) {
-    val username = remember { mutableStateOf("") }
-    val enabled = remember(threshold) { derivedStateOf { username.value.length > threshold } }
+    var username by remember { mutableStateOf("") }
+    val enabled by remember(threshold) { derivedStateOf { username.length > threshold } }
     SideEffect { println("CreateUsernameDerived recomposed") }
     Column {
-        SideEffect { println("CreateUsernameDerived.Column recomposed") } // Inlined, to delete
-        Text("CreateUsernameDerived")
-        UsernameTextField(username)
-        CreateButton { enabled.value }
+        UsernameTextField({ username }, { username = it })
+        CreateButton { enabled }
     }
 }
 
 @Composable
-private fun UsernameTextField(username: MutableState<String>) {
+private fun UsernameTextField(username: () -> String, setUsername: (String) -> Unit) {
     SideEffect { println("UsernameTextField recomposed") }
-    TextField(value = username.value, onValueChange = { username.value = it })
+    TextField(value = username(), onValueChange = setUsername)
 }
 
 @Composable

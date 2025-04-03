@@ -196,12 +196,11 @@ private fun NarrowRecompositionScope(vm: ViewModel) {
 @Preview
 @Composable
 private fun DiceWindow() {
-    var number by remember { mutableIntStateOf(Random.nextInt(6)) }
+    var number by remember { mutableIntStateOf(dice()) }
     Column {
         DiceLabel(number = number)
-//        DiceLabel(number = { number })
         Text("Add point",
-            modifier = Modifier.clickable { number = Random.nextInt(6) }
+            modifier = Modifier.clickable { number = dice() }
         )
     }
 }
