@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +32,7 @@ fun UserRowSimplified(userRowUi: UserRowUi) {
     Row(modifier = Modifier.fillMaxWidth()) {
         Image(
             painter = painterResource(id = R.drawable.avatar),
-            contentDescription = null,
+            contentDescription = "Picture of ${userRowUi.name}",
             modifier = Modifier.size(80.dp)
         )
         Column{
@@ -49,7 +51,7 @@ fun UserRow(userRowUi: UserRowUi) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.avatar),
-            contentDescription = null,
+            contentDescription = "Picture of ${userRowUi.name}",
             modifier = Modifier
                 .padding(8.dp)
                 .size(80.dp)
@@ -64,6 +66,18 @@ fun UserRow(userRowUi: UserRowUi) {
     }
 }
 
+@Composable
+fun UserList(
+    users: List<UserRowUi>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        items(users, key = { it.name }) { user ->
+            UserRow(user)
+        }
+    }
+}
+
 @Preview
 @Composable
 fun UserRowSimplifiedPreview() {
@@ -74,4 +88,21 @@ fun UserRowSimplifiedPreview() {
 @Composable
 fun UserRowPreview() {
     UserRow(UserRowUi("Samuel Vimes", "Commander of the City Watch") {})
+}
+
+@Preview
+@Composable
+fun UserListPreview() {
+    UserList(
+        users = listOf(
+            UserRowUi("Samuel Vimes", "Commander of the City Watch") {},
+            UserRowUi("Carrot Ironfoundersson", "Watchman") {},
+            UserRowUi("Angua von Überwald", "Watchwoman") {},
+            UserRowUi("Nobby Nobbs", "Watchman") {},
+            UserRowUi("Fred Colon", "Watchman") {},
+            UserRowUi("Cheery Littlebottom", "Watchwoman") {},
+            UserRowUi("Detritus", "Watchman") {},
+            UserRowUi("Cuddy", "Watchman") {},
+        )
+    )
 }

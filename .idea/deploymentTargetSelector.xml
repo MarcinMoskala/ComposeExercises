@@ -13,19 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="MergedSemanticsTest">
+      <SelectionState runConfigName="showExampleTrees()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="OverlappingComposableTest">
+      <SelectionState runConfigName="ExampleTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="UnmergedTreeRequiredTest">
+      <SelectionState runConfigName="CalculatorPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MergedButHiddenTextTest">
+      <SelectionState runConfigName="CalculatorTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SingleAnswerQuestionTest">
+      <SelectionState runConfigName="testRoundedCornerCheckbox()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
