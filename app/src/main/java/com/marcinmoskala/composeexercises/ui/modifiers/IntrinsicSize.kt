@@ -4,9 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,7 +42,7 @@ private fun TextsExample() {
                 .clip(RoundedCornerShape(10.dp))
                 .background(Color.Cyan)
                 .padding(10.dp)
-                .width(IntrinsicSize.Min)
+//                .width(IntrinsicSize.Min)
         ) {
             DecoratedText("Good day!")
             DecoratedText("Future")
@@ -60,7 +58,7 @@ private fun DecoratedText(text: String, modifier: Modifier = Modifier) {
         textAlign = TextAlign.Center,
         color = Color.White,
         modifier = modifier
-            .fillMaxWidth()
+//            .fillMaxWidth()
             .padding(10.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(Color.Blue)
@@ -75,7 +73,7 @@ private fun RowExample(name: String, label: String, modifier: Modifier = Modifie
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Max)
+//            .height(IntrinsicSize.Max)
     ) {
         Image(
             painter = painterResource(id = R.drawable.avatar),
@@ -88,9 +86,9 @@ private fun RowExample(name: String, label: String, modifier: Modifier = Modifie
         VerticalDivider(
             color = Color.Black,
             modifier = Modifier
-//                .height(80.dp)
-                .padding(vertical = 8.dp)
-                .fillMaxHeight()
+                .height(80.dp)
+//                .padding(vertical = 8.dp)
+//                .fillMaxHeight()
                 .width(1.dp)
         )
         Column(
