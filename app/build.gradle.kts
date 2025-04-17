@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.screenshot)
     kotlin("plugin.serialization") version "2.1.10"
     id("kotlin-parcelize")
 }
@@ -33,12 +34,19 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
     buildFeatures {
         compose = true
     }
+
+    // Needed by Screenshot tests
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.4"
+    }
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 composeCompiler {
@@ -75,4 +83,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.accompanist.flowlayout)
+    screenshotTestImplementation(libs.androidx.compose.ui.tooling)
 }
