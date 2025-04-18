@@ -14,7 +14,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.marcinmoskala.composeexercises.ui.components.SingleAnswerQuestion
+import com.marcinmoskala.composeexercises.sample.components.SingleAnswerQuestion
 import org.junit.Rule
 import org.junit.Test
 

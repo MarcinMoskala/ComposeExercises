@@ -1,7 +1,7 @@
 package com.marcinmoskala.composeexercises.components
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.marcinmoskala.composeexercises.ui.sample.Calculator
+import com.marcinmoskala.composeexercises.sample.sample.Calculator
 import org.junit.Rule
 import org.junit.Test
 

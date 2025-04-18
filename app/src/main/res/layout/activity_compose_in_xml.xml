@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.compose.ui.platform.ComposeView
-        tools:composableName="com.marcinmoskala.composeexercises.ui.interop.AnimatedGreetingKt.AnimatedGreeting"
+        tools:composableName="com.marcinmoskala.composeexercises.sample.interop.AnimatedGreetingKt.AnimatedGreeting"
         android:id="@+id/composeView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

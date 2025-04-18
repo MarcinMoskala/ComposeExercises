@@ -18,7 +18,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.printToLog
-import com.marcinmoskala.composeexercises.ui.sample.UserListPreview
+import com.marcinmoskala.composeexercises.sample.sample.UserListPreview
 import org.junit.Rule
 import org.junit.Test
 

@@ -2,7 +2,7 @@ package com.marcinmoskala.composeexercises
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.marcinmoskala.composeexercises.ui.sample.GamePlot
+import com.marcinmoskala.composeexercises.sample.sample.GamePlot
 
 class GameStoryDialogScreenScreenshots {
 

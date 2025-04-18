@@ -15,7 +15,7 @@
         android:theme="@style/Theme.ComposeExercises"
         tools:targetApi="31">
         <activity
-            android:name=".ui.interop.ComposeInXmlActivity"
+            android:name=".sample.interop.ComposeInXmlActivity"
             android:exported="true"  />
         <activity
             android:name=".MainActivity"
@@ -29,23 +29,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.basics.MainActivity"
+            android:name=".sample.basics.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.basics.themes.ThemedActivity"
+            android:name=".sample.basics.themes.ThemedActivity"
             android:exported="true" />
-        <activity android:name=".ui.navigation.SettingsActivity" />
+        <activity android:name=".sample.navigation.SettingsActivity" />
         <activity
-            android:name=".ui.navigation.SampleFragmentActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.interop.ComposeInActivityActivity"
+            android:name=".sample.navigation.SampleFragmentActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.interop.ComposeInFragmentActivity"
+            android:name=".sample.interop.ComposeInActivityActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.interop.FragmentInComposeActivity"
+            android:name=".sample.interop.ComposeInFragmentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".sample.interop.FragmentInComposeActivity"
             android:exported="true" />
     </application>
 
