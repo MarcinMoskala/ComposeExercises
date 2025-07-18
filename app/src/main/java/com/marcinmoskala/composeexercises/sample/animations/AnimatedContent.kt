@@ -137,7 +137,7 @@ private fun CoolCounterPreview() {
 //                            slideOut(targetOffset = { IntOffset(-offset, 0) }) + scaleOut()
                 } else {
                     slideIn(initialOffset = { IntOffset(0, offset) }) togetherWith
-                            slideOut(targetOffset = { IntOffset(0, +offset) })
+                            slideOut(targetOffset = { IntOffset(0, -offset) })
 //                    slideIn(initialOffset = { IntOffset(-offset, 0) }) + scaleIn() togetherWith
 //                            slideOut(targetOffset = { IntOffset(offset, 0) }) + scaleOut()
                 }
