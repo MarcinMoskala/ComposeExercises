@@ -3,11 +3,15 @@ package com.marcinmoskala.composeexercises.sample.animations
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandIn
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOut
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +23,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -217,6 +225,38 @@ fun AnimatedVisibilityTransformationsPreview() {
         }
         Button(onClick = { counter++ }) {
             Text("Next")
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun TopAppBarAnimationExample() {
+    var isVisible by remember { mutableStateOf(true) }
+    Scaffold(
+        topBar = {
+            AnimatedVisibility(
+                visible = isVisible,
+                exit = slideOutVertically { -it } + shrinkVertically(),
+                enter = slideInVertically { -it } + expandVertically(),
+            ) {
+                TopAppBar(title = { Text("Title") })
+            }
+        },
+        bottomBar = {
+            OutlinedButton(onClick = { isVisible = !isVisible }) {
+                Text("Flip visibility")
+            }
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .background(Color.Green)
+                .fillMaxSize()
+        ) {
+            Text("Jumping text")
         }
     }
 }

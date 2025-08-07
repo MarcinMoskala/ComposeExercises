@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -15,7 +16,9 @@ import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.unit.constrainWidth
@@ -27,7 +30,10 @@ import com.marcinmoskala.composeexercises.R
 @Preview
 @Composable
 fun LayoutPreview() {
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Box(
             modifier = Modifier
                 .size(100.dp)
@@ -69,9 +75,9 @@ fun LayoutPreview() {
 private fun Padding() {
     Row {
         Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.avatar),
+            painter = painterResource(id = R.drawable.avatar),
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .layout { measurable, constraints ->
                     val padding = 10.dp.roundToPx()
                     val newConstraints = constraints.offset(-padding * 2, -padding * 2)
@@ -91,9 +97,9 @@ private fun Padding() {
 private fun UnderstandingLayoutPhase() {
     Row {
         Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.avatar),
+            painter = painterResource(id = R.drawable.avatar),
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .layout { measurable, constraints ->
                     println("#1 Need to measure child")
                     val placeable = measurable.measure(constraints)
@@ -124,7 +130,7 @@ private fun MyBasicColumn(
     Layout(
         modifier = modifier,
         content = content
-    ) { measurables, constraints ->
+    ) { measurables: List<Measurable>, constraints ->
         val placeables = measurables.map { measurable ->
             measurable.measure(constraints)
         }
@@ -143,23 +149,23 @@ private fun MyBasicColumn(
 private fun MyBasicColumnPreview() {
     MyBasicColumn {
         Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.avatar),
+            painter = painterResource(id = R.drawable.avatar),
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .padding(10.dp)
                 .background(Red)
         )
         Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.avatar),
+            painter = painterResource(id = R.drawable.avatar),
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .padding(10.dp)
                 .background(Red)
         )
         Image(
-            painter = androidx.compose.ui.res.painterResource(id = R.drawable.avatar),
+            painter = painterResource(id = R.drawable.avatar),
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .padding(10.dp)
                 .background(Red)
         )

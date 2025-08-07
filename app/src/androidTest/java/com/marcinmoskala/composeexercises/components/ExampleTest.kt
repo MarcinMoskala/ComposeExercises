@@ -31,9 +31,9 @@ class ExampleTest {
         Button(onClick = { /*TODO*/ }) {
             Icon(
                 imageVector = Icons.Filled.Favorite,
-                contentDescription = null, // Invisible in semantic tree, because no contentDescription
+                contentDescription = "Favorite",
             )
-            Spacer(Modifier.size(ButtonDefaults.IconSpacing)) // Invisible in semantic tree, because no properties
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             Text("Like")
         }
     }

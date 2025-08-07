@@ -61,12 +61,12 @@ fun RainbowBorderExample(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier.size(100.dp)
+        modifier = modifier.size(100.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.avatar),
             contentDescription = "Image",
-            modifier = modifier
+            modifier = Modifier
                 .background(Red)
                 .padding(10.dp)
                 .background(Green)

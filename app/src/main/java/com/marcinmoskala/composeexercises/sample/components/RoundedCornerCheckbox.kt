@@ -81,3 +81,12 @@ fun RoundedCornerCheckboxPreview() {
         onClick = { checked = !checked },
     )
 }
+@Preview
+@Composable
+fun RoundedCornerCheckboxUncheckedPreview() {
+    var checked by remember { mutableStateOf(false) }
+    RoundedCornerCheckbox(
+        isChecked = checked,
+        onClick = { checked = !checked },
+    )
+}

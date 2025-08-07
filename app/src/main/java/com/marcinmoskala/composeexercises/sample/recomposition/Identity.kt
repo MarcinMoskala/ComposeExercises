@@ -234,7 +234,7 @@ private fun A() {
 @Composable
 private fun DisplayRandomValue(value: Boolean = true) {
     val s = rememberSaveable { Random.nextInt().toString() }
-    Text(s)
+    Text("$value, $s")
 }
 
 // *** movableContentOf

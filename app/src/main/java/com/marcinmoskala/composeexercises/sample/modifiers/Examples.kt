@@ -151,14 +151,10 @@ private fun BorderExample() {
 @Preview
 @Composable
 private fun Exercise() {
-    Column(
-        modifier = Modifier
-    ) {
-        Image(
-            modifier = Modifier,
-            contentDescription = null,
-            painter = painterResource(id = R.drawable.avatar)
-        )
-    }
+    Image(
+        modifier = Modifier,
+        contentDescription = null,
+        painter = painterResource(id = R.drawable.avatar)
+    )
 }
 

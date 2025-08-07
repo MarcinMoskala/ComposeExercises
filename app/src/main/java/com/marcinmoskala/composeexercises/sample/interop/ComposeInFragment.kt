@@ -18,7 +18,7 @@ class ComposeInFragmentFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         setContent {
-            AnimatedGreeting()
+            AnimatedGreeting("from Fragment!")
         }
     }
 }

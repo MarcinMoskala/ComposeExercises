@@ -38,6 +38,7 @@ import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
@@ -289,6 +290,7 @@ fun Modifier.noRippleClickable(onClick: () -> Unit) =
 private class CircleNode(var color: Color) : DrawModifierNode, Modifier.Node() {
     override fun ContentDrawScope.draw() {
         drawCircle(color)
+        drawContent()
     }
 }
 
@@ -305,7 +307,9 @@ fun Modifier.circleBackground(color: Color) = this then CircleElement(color)
 @Preview
 @Composable
 fun CirclePreview() {
-    Box(
+    Text(
+        "ABCD",
+        textAlign = TextAlign.Center,
         modifier = Modifier
             .size(100.dp)
             .circleBackground(Color.Blue)

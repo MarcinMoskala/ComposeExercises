@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.compose.AndroidFragment
 import androidx.fragment.compose.FragmentState
 import androidx.fragment.compose.rememberFragmentState
+import java.lang.ref.SoftReference
 
 // Run FragmentInComposeActivity below
 @Preview
@@ -123,8 +124,9 @@ inline fun <reified T : Fragment> AndroidFragmentV2(
     modifier: Modifier = Modifier,
     fragmentState: FragmentState = rememberFragmentState(),
     arguments: Bundle = Bundle.EMPTY,
-    updateKeys: Array<Any> = emptyArray(),
+    noinline onCreate: (T) -> Unit = { },
     noinline update: (T) -> Unit = { },
+    updateKeys: Array<Any> = emptyArray(),
 ) {
     if (LocalInspectionMode.current) {
         Text(
@@ -133,14 +135,15 @@ inline fun <reified T : Fragment> AndroidFragmentV2(
         )
         return
     }
-    var fragmentRef by remember { mutableStateOf<T?>(null) }
+    var fragmentRef by remember { mutableStateOf<SoftReference<T>?>(null) }
     LaunchedEffect(update, *updateKeys) {
-        fragmentRef?.let { update(it) }
+        fragmentRef?.get()?.let { update(it) }
     }
     AndroidFragment(clazz = T::class.java, modifier, fragmentState, arguments,
         onUpdate = {
+            onCreate(it)
             update(it)
-            fragmentRef = it
+            fragmentRef = SoftReference(it)
         }
     )
 }

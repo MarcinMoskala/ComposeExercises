@@ -96,7 +96,10 @@ private fun CollectionProcessingChallengeScreen(level: Int) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Text("Level: $level Difficulty: ${difficulty.steps} Challenge: ${challenge.power}")
+        Text(
+            "Level: $level Difficulty: ${difficulty.steps} Challenge: ${challenge.power}",
+            fontSize = 32.sp
+        )
         Image(
             painter = painterResource(id = R.drawable.heart_full),
             contentDescription = null,
@@ -114,6 +117,7 @@ private fun CollectionProcessingChallengeScreen(level: Int) {
 private fun CollectionProcessingChallengeScreenPreview() {
     CollectionProcessingChallengeScreen(1)
 }
+
 @Preview
 @Composable
 private fun CollectionProcessingChallengeScreenIncrementalLevelPreview() {
@@ -199,7 +203,8 @@ private fun DiceWindow() {
     var number by remember { mutableIntStateOf(dice()) }
     Column {
         DiceLabel(number = number)
-        Text("Add point",
+        Text(
+            "Add point",
             modifier = Modifier.clickable { number = dice() }
         )
     }
