@@ -1,27 +1,26 @@
 [versions]
-accompanistFlowlayout = "0.26.2-beta"
-agp = "8.9.1"
-coil3-io = "3.1.0"
-kotlin = "2.1.20"
-coreKtx = "1.16.0"
+accompanistFlowlayout = "0.36.0"
+agp = "8.13.0"
+coil3-io = "3.3.0"
+kotlin = "2.2.21"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-kotlinxCollectionsImmutable = "0.3.8"
-kotlinxSerializationJson = "1.8.1"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.1"
-composeBom = "2025.04.00"
-navigationCompose = "2.8.9"
-fragmentKtx = "1.8.6"
-fragmentCompose = "1.8.6"
-screenshot = "0.0.1-alpha09"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+kotlinxCollectionsImmutable = "0.4.0"
+kotlinxSerializationJson = "1.9.0"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.10.01"
+navigationCompose = "2.9.5"
+fragmentKtx = "1.8.9"
+fragmentCompose = "1.8.9"
+screenshot = "0.0.1-alpha11"
 
 [libraries]
 accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil3-io" }
 coil3 = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3-io" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
