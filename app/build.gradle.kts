@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.marcinmoskala.composeexercises"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.marcinmoskala.composeexercises"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.fragment.compose)
