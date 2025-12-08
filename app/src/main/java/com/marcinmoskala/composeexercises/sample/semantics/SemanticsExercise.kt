@@ -37,18 +37,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.error
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.paneTitle
-import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.marcinmoskala.composeexercises.R
@@ -86,8 +75,7 @@ fun SemanticsExerciseScreen(
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier
                             .semantics {
-                                paneTitle = "Inbox"
-                                heading()
+                                // TODO
                             }
                     )
                 },
@@ -106,7 +94,7 @@ fun SemanticsExerciseScreen(
                     text = "$newCount new messages",
                     modifier = Modifier
                         .semantics {
-                            liveRegion = LiveRegionMode.Polite
+                            // TODO
                         },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface
@@ -122,12 +110,9 @@ fun SemanticsExerciseScreen(
                         .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f))
                         .padding(12.dp)
                         .semantics {
-                            error("Failed to sync. Tap to retry.")
-                            liveRegion = LiveRegionMode.Assertive
+                            // TODO
                         }
                         .combinedClickable(
-                            onClickLabel = "Retry sync",
-                            onLongClickLabel = "Dismiss error",
                             onClick = { onDismissError() },
                             onLongClick = { onDismissError() }
                         ),
@@ -149,7 +134,7 @@ fun SemanticsExerciseScreen(
                 ) {
                     Text(text = "Syncing…", style = MaterialTheme.typography.bodyMedium)
                     Spacer(Modifier.height(6.dp))
-                    SemanticsAwareLinearProgressIndicator(progress = progress)
+                    CustomLinearProgressIndicator(progress = progress)
                 }
                 Spacer(Modifier.height(16.dp))
             }
@@ -158,7 +143,9 @@ fun SemanticsExerciseScreen(
                 text = "Messages",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier
-                    .semantics { heading() }
+                    .semantics {
+                        // TODO
+                    }
             )
             Spacer(Modifier.height(4.dp))
             HorizontalDivider()
@@ -183,7 +170,7 @@ fun SemanticsExerciseScreen(
 }
 
 @Composable
-private fun SemanticsAwareLinearProgressIndicator(
+private fun CustomLinearProgressIndicator(
     progress: Float,
 ) {
     val clamped = progress.coerceIn(0f, 1f)
@@ -194,7 +181,7 @@ private fun SemanticsAwareLinearProgressIndicator(
             .clip(RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .semantics {
-                progressBarRangeInfo = ProgressBarRangeInfo(clamped, 0f..1f, 0)
+                // TODO
             }
     ) {
         Box(
@@ -220,21 +207,11 @@ private fun MessageRow(
             .fillMaxWidth()
             .padding(vertical = 12.dp)
             .semantics(mergeDescendants = true) {
-                contentDescription = buildString {
-                    append("From ${message.sender}. ")
-                    append("Subject: ${message.subject}. ")
-                    if (message.unread) append("Unread. ") else append("Read. ")
-                    if (message.starred) append("Starred.") else append("Not starred.")
-                }
-                customActions = listOf(
-                    CustomAccessibilityAction(label = "Archive") { onArchive(message.id); true },
-                    CustomAccessibilityAction(label = if (message.unread) "Mark as read" else "Mark as unread") {
-                        onMarkReadToggle(message.id); true
-                    }
-                )
+                // TODO
+                // TODO
             }
             .clickable(
-                onClickLabel = "Open message",
+                // TODO
                 onClick = { onOpen(message.id) },
             ),
         verticalAlignment = Alignment.CenterVertically
@@ -276,15 +253,13 @@ private fun MessageRow(
         IconButton(
             onClick = { onToggleStar(message.id) },
             modifier = Modifier.semantics {
-                stateDescription = if (message.starred) "Starred" else "Not starred"
+                // TODO
             },
         ) {
-            val icon = if (message.starred) R.drawable.heart_full else R.drawable.heart_empty
-            val tint = if (message.starred) MaterialTheme.colorScheme.primary else Color.Gray
             Icon(
-                painter = painterResource(id = icon),
+                painter = painterResource(if (message.starred) R.drawable.heart_full else R.drawable.heart_empty),
                 contentDescription = if (message.starred) "Remove star" else "Add star",
-                tint = tint,
+                tint = if (message.starred) MaterialTheme.colorScheme.primary else Color.Gray,
                 modifier = Modifier.size(24.dp)
             )
         }
