@@ -1,4 +1,4 @@
-package com.marcinmoskala.composeexercises.sample.accessibility
+package com.marcinmoskala.composeexercises.sample.semantics
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
