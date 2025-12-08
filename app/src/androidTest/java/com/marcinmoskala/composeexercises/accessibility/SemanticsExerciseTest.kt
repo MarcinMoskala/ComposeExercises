@@ -1,4 +1,4 @@
-package com.marcinmoskala.composeexercises.theming
+package com.marcinmoskala.composeexercises.accessibility
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +27,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.marcinmoskala.composeexercises.R
-import com.marcinmoskala.composeexercises.sample.semantics.SemanticsExerciseMessage
-import com.marcinmoskala.composeexercises.sample.semantics.SemanticsExerciseScreen
+import com.marcinmoskala.composeexercises.sample.accessibility.SemanticsExerciseMessage
+import com.marcinmoskala.composeexercises.sample.accessibility.SemanticsExerciseScreen
 import com.marcinmoskala.composeexercises.sample.theming.AppTheme
 import org.junit.Rule
 import org.junit.Test
