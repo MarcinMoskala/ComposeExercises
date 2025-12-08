@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.AccessibilityAction
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
@@ -26,9 +27,9 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.marcinmoskala.composeexercises.R
+import com.marcinmoskala.composeexercises.sample.semantics.SemanticsExerciseMessage
+import com.marcinmoskala.composeexercises.sample.semantics.SemanticsExerciseScreen
 import com.marcinmoskala.composeexercises.sample.theming.AppTheme
-import com.marcinmoskala.composeexercises.sample.theming.SemanticsExerciseMessage
-import com.marcinmoskala.composeexercises.sample.theming.SemanticsExerciseScreen
 import org.junit.Rule
 import org.junit.Test
 
@@ -107,6 +108,21 @@ class SemanticsExerciseTest {
         val headingMatcher = isHeadingWithGuidance("Add heading() to the section header")
         composeTestRule.onNodeWithText("Messages")
             .assert(headingMatcher)
+    }
+
+    @Test
+    fun progressIndicator_exposes_progressBarRangeInfo() {
+        setContent()
+
+        // Find the progress indicator by its ProgressBarRangeInfo semantics
+        val expected = ProgressBarRangeInfo(current = 0.65f, range = 0f..1f, steps = 0)
+        val matcher = hasProgressBarRangeInfoWithGuidance(
+            expected,
+            hint = "Expose progressBarRangeInfo = ProgressBarRangeInfo(progress, 0f..1f, 0) on the progress bar semantics",
+        )
+
+        composeTestRule.onNode(matcher)
+            .assert(matcher)
     }
 
     @Test
@@ -281,6 +297,14 @@ private fun hasExactContentDescriptionWithGuidance(expected: String): SemanticsM
     SemanticsMatcher("Row contentDescription mismatch. Expected exactly: '$expected'. Hint: ensure you compose it inside semantics { contentDescription = buildString { ... } and set mergeDescendants = true }") { node ->
         val value = node.config.getOrNull(SemanticsProperties.ContentDescription) ?: return@SemanticsMatcher false
         value == listOf(expected)
+    }
+
+private fun hasProgressBarRangeInfoWithGuidance(
+    expected: ProgressBarRangeInfo,
+    hint: String,
+): SemanticsMatcher =
+    SemanticsMatcher("Missing progressBarRangeInfo = $expected. Hint: $hint") { node ->
+        node.config.getOrNull(SemanticsProperties.ProgressBarRangeInfo) == expected
     }
 
 private fun expectedRowDescription(sender: String, subject: String, unread: Boolean, starred: Boolean): String = buildString {

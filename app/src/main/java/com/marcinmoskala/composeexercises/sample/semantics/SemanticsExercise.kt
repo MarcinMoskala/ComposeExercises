@@ -1,10 +1,11 @@
-package com.marcinmoskala.composeexercises.sample.theming
+package com.marcinmoskala.composeexercises.sample.semantics
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,11 +17,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,17 +33,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
@@ -145,7 +149,7 @@ fun SemanticsExerciseScreen(
                 ) {
                     Text(text = "Syncing…", style = MaterialTheme.typography.bodyMedium)
                     Spacer(Modifier.height(6.dp))
-                    LinearProgressIndicator(progress = { progress })
+                    SemanticsAwareLinearProgressIndicator(progress = progress)
                 }
                 Spacer(Modifier.height(16.dp))
             }
@@ -175,6 +179,30 @@ fun SemanticsExerciseScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SemanticsAwareLinearProgressIndicator(
+    progress: Float,
+) {
+    val clamped = progress.coerceIn(0f, 1f)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .semantics {
+                progressBarRangeInfo = ProgressBarRangeInfo(clamped, 0f..1f, 0)
+            }
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(clamped)
+                .height(8.dp)
+                .background(MaterialTheme.colorScheme.primary)
+        )
     }
 }
 
@@ -266,17 +294,49 @@ private fun MessageRow(
 @Preview(name = "Semantics exercise")
 @Composable
 private fun SemanticsExercisePreview() {
-    AppTheme(darkTheme = false) {
+    _root_ide_package_.com.marcinmoskala.composeexercises.sample.theming.AppTheme(darkTheme = false) {
         var showError by remember { mutableStateOf(false) }
         var downloading by remember { mutableStateOf(true) }
         var progress by remember { mutableStateOf(0.65f) }
         var messages by remember {
             mutableStateOf(
                 listOf(
-                    SemanticsExerciseMessage(1, "Alice", "Trip photos", "Check out these pictures from the mountains.", R.drawable.avatar, unread = true, starred = false),
-                    SemanticsExerciseMessage(2, "Bob", "Invoice #3411", "Please find attached the invoice for November.", R.drawable.avatar, unread = false, starred = true),
-                    SemanticsExerciseMessage(3, "Carol", "Team meeting", "Meeting rescheduled to 3pm tomorrow.", R.drawable.avatar, unread = true, starred = false),
-                    SemanticsExerciseMessage(4, "Dave", "Lunch?", "Are you up for lunch this Friday?", R.drawable.avatar, unread = false, starred = false)
+                    SemanticsExerciseMessage(
+                        1,
+                        "Alice",
+                        "Trip photos",
+                        "Check out these pictures from the mountains.",
+                        R.drawable.avatar,
+                        unread = true,
+                        starred = false
+                    ),
+                    SemanticsExerciseMessage(
+                        2,
+                        "Bob",
+                        "Invoice #3411",
+                        "Please find attached the invoice for November.",
+                        R.drawable.avatar,
+                        unread = false,
+                        starred = true
+                    ),
+                    SemanticsExerciseMessage(
+                        3,
+                        "Carol",
+                        "Team meeting",
+                        "Meeting rescheduled to 3pm tomorrow.",
+                        R.drawable.avatar,
+                        unread = true,
+                        starred = false
+                    ),
+                    SemanticsExerciseMessage(
+                        4,
+                        "Dave",
+                        "Lunch?",
+                        "Are you up for lunch this Friday?",
+                        R.drawable.avatar,
+                        unread = false,
+                        starred = false
+                    )
                 )
             )
         }
