@@ -1,6 +1,6 @@
 @file:Suppress("unused", "UNUSED_VARIABLE", "UNUSED_PARAMETER")
 
-package com.marcinmoskala.composeexercises.sample.modifiers
+package com.marcinmoskala.composeexercises.sample.layout
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.graphics.Color.Companion.Red
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -122,52 +120,5 @@ private fun UnderstandingLayoutPhase() {
     }
 }
 
-@Composable
-private fun MyBasicColumn(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Layout(
-        modifier = modifier,
-        content = content
-    ) { measurables: List<Measurable>, constraints ->
-        val placeables = measurables.map { measurable ->
-            measurable.measure(constraints)
-        }
-        layout(constraints.maxWidth, constraints.maxHeight) {
-            var yPosition = 0
-            placeables.forEach { placeable ->
-                placeable.placeRelative(x = 0, y = yPosition)
-                yPosition += placeable.height
-            }
-        }
-    }
-}
 
-@Preview
-@Composable
-private fun MyBasicColumnPreview() {
-    MyBasicColumn {
-        Image(
-            painter = painterResource(id = R.drawable.avatar),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(10.dp)
-                .background(Red)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.avatar),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(10.dp)
-                .background(Red)
-        )
-        Image(
-            painter = painterResource(id = R.drawable.avatar),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(10.dp)
-                .background(Red)
-        )
-    }
-}
+
