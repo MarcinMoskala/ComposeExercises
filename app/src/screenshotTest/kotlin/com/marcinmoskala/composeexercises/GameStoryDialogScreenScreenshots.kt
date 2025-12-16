@@ -2,10 +2,12 @@ package com.marcinmoskala.composeexercises
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+//import com.android.tools.screenshot.PreviewTest
 import com.marcinmoskala.composeexercises.sample.sample.GamePlot
 
 class GameStoryDialogScreenScreenshots {
 
+//    @PreviewTest
     @Preview(device = "id:pixel_xl")
     @Preview(device = "id:desktop_medium")
     @Composable
@@ -13,6 +15,7 @@ class GameStoryDialogScreenScreenshots {
         GamePlot(text = null, onPlay = {})
     }
 
+//    @PreviewTest
     @Preview(device = "id:pixel_xl")
     @Preview(device = "id:desktop_medium")
     @Composable
