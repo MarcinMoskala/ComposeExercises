@@ -18,17 +18,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.PersistentList
@@ -52,25 +49,20 @@ fun ProductScreen(
     val resolvedListState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
-    val showBackToTop by remember {
-        derivedStateOf {
-            resolvedListState.firstVisibleItemScrollOffset > 0
-        }
-    }
+    val showBackToTop = resolvedListState.firstVisibleItemScrollOffset > 0
 
-    val sortedProducts = remember(products, comparator) {
+    val sortedProducts =
         products.sortedWith(comparator).toPersistentList()
-    }
 
     Box(modifier = modifier) {
         LazyColumn(state = resolvedListState) {
-            items(sortedProducts, key = { it.id }) { product ->
+            items(sortedProducts) { product ->
                 ProductItem(product)
             }
         }
 
         FirstPricePointer(
-            scrollProvider = { resolvedListState.firstVisibleItemScrollOffset },
+            scroll = resolvedListState.firstVisibleItemScrollOffset,
             modifier = Modifier.align(Alignment.TopEnd)
         )
 
@@ -87,15 +79,13 @@ fun ProductScreen(
 
 @Composable
 private fun FirstPricePointer(
-    scrollProvider: () -> Int,
+    scroll: Int,
     modifier: Modifier = Modifier
 ) {
     RecompositionCounterEffect("Header")
     Box(
         modifier = modifier
-            .offset {
-                IntOffset(0, -scrollProvider())
-            }
+            .offset(y = with(LocalDensity.current) { (-scroll).toDp() })
             .padding(16.dp)
             .padding(top = 24.dp, end = 30.dp)
     ) {
