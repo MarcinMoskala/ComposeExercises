@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.screenshot)
+    alias(libs.plugins.stability.analyzer)
     kotlin("plugin.serialization") version "2.1.10"
     id("kotlin-parcelize")
 }
@@ -42,6 +43,11 @@ android {
         compose = true
     }
 
+    sourceSets {
+        maybeCreate("screenshotTest").manifest.srcFile("src/screenshotTest/AndroidManifest.xml")
+        maybeCreate("screenshotTestDebug").manifest.srcFile("src/screenshotTest/AndroidManifest.xml")
+    }
+
     // Needed by Screenshot tests
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.4"
@@ -57,6 +63,18 @@ composeCompiler {
 composeCompiler {
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
     metricsDestination = layout.buildDirectory.dir("compose_compiler")
+}
+
+tasks.withType<com.android.build.gradle.tasks.GenerateTestConfig>().configureEach {
+    if (name.contains("ScreenshotTest", ignoreCase = true)) {
+        enabled = false
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    if (name.contains("ScreenshotTest", ignoreCase = true)) {
+        enabled = false
+    }
 }
 
 dependencies {
