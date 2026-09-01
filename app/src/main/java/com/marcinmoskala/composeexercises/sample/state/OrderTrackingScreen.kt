@@ -42,12 +42,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OrderTrackingScreen(tracker: OrderTracker, modifier: Modifier = Modifier) {
-    RecompositionCounterEffect("OrderTrackingScreen")
     BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        RecompositionCounterEffect("OrderTrackingScreen")
         val transition = rememberInfiniteTransition()
         val truckOffset by transition.animateFloat(
             initialValue = 0f,
