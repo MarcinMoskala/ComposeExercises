@@ -17,9 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +29,6 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentHashMap
 
 data class Product(val id: Int, val name: String, val price: Double)
 
@@ -147,37 +144,4 @@ private fun PreviewProductScreen() {
         Product(it, "Product $it", it * 10.0)
     }.toPersistentList()
     ProductScreen(products)
-}
-
-interface RecompositionCounter {
-    fun increment(key: String)
-    fun get(key: String): Int?
-}
-
-class ActualRecompositionCounter : RecompositionCounter {
-    private var recompositions = ConcurrentHashMap<String, Int>()
-
-    override fun increment(key: String) {
-        recompositions.compute(key) { _, oldValue ->
-            oldValue?.let { oldValue + 1 } ?: 1
-        }
-    }
-
-    override fun get(key: String): Int? = recompositions[key]
-}
-
-object NoOpRecompositionCounter : RecompositionCounter {
-    override fun increment(key: String) {}
-    override fun get(key: String): Int? = null
-}
-
-val LocalCompositionCounter =
-    staticCompositionLocalOf<RecompositionCounter> { NoOpRecompositionCounter }
-
-@Composable
-inline fun RecompositionCounterEffect(key: String) {
-    val counter = LocalCompositionCounter.current
-    SideEffect {
-        counter.increment(key)
-    }
 }
