@@ -13,3 +13,12 @@
 .externalNativeBuild
 .cxx
 local.properties
+/traces
+
+# Local IDE state
+/.idea/deploymentTargetSelector.xml
+/.idea/firebender/
+
+# AI assistants' local config and memory
+/.ai/
+/.junie/

@@ -30,6 +30,13 @@ android {
                 "proguard-rules.pro"
             )
         }
+        // Release-like build used for profiling (Perfetto, Macrobenchmark)
+        create("benchmark") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -96,6 +103,9 @@ dependencies {
     implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.compose.runtime.tracing)
+    // Lets Perfetto show composable functions as trace sections (composition tracing)
+    implementation(libs.androidx.tracing.perfetto)
+    implementation(libs.androidx.tracing.perfetto.binary)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeExercises"
         tools:targetApi="31">
+        <profileable
+            android:shell="true"
+            tools:targetApi="29" />
+        <activity
+            android:name=".exercises.advanced.MarketDashboardActivity"
+            android:exported="true" />
         <activity
             android:name=".sample.interop.ComposeInXmlActivity"
             android:exported="true"  />

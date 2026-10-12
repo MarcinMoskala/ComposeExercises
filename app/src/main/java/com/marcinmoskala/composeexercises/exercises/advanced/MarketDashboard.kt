@@ -59,6 +59,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,16 +86,23 @@ import kotlin.random.Random
 // This screen works correctly, but it is slow: it janks while scrolling and
 // keeps the main thread and RenderThread busy even when the user does nothing.
 //
-// 1. Run the app on a real device (release-like build, not a debug preview),
-//    record a system trace with Perfetto (or Android Studio Profiler ->
-//    "Capture System Activities") while idling and while scrolling the list.
-//    Find which composables recompose too often, which work is done on every
-//    frame, and what the RenderThread is spending its time on.
+// 1. Profile it with Perfetto. Use a release-like build (`benchmark` build type)
+//    on a real device if possible:
+//    - scripts/record-perfetto-trace.sh idle|scroll  - records a trace of
+//      MarketDashboardActivity into traces/ (run ./gradlew :app:installBenchmark first),
+//    - ./gradlew :benchmark:connectedBenchmarkAndroidTest - Macrobenchmark that
+//      records traces and reports frame times and composition counts/times.
+//    Open traces in https://ui.perfetto.dev. Composition tracing is enabled, so
+//    every composable is a slice on the main thread. Find which composables
+//    recompose too often, which work is done on every frame, and what the
+//    RenderThread is spending its time on.
 // 2. Fix the issues you have found, without changing how the screen looks or
 //    behaves, and record a new trace to confirm the improvement.
-//
-// Use RecompositionCounterEffect or Layout Inspector recomposition counts to
-// double-check your findings.
+//    MarketDashboardTest (androidTest) checks the recomposition-related issues:
+//    ./gradlew :app:connectedDebugAndroidTest \
+//      -Pandroid.testInstrumentationRunnerArguments.class=com.marcinmoskala.composeexercises.exercises.advanced.MarketDashboardTest
+//    All its tests fail before the optimization. Some issues (expensive work,
+//    allocations, overdraw) are only visible in the traces.
 
 data class Stock(
     val symbol: String,
@@ -155,7 +163,7 @@ class MarketSimulator(
         }
     }
 
-    private fun tick() {
+    fun tick() {
         val now = System.currentTimeMillis()
         val current = _state.value
         val changed = List(updatesPerTick) { random.nextInt(current.stocks.size) }.toSet()
@@ -203,13 +211,14 @@ class MarketSimulator(
         )
     }
 
+    // Unique for every index below 26^3, because 4567 is coprime with 26^3
     private fun symbolFor(index: Int): String {
-        val letters = ('A'..'Z').toList()
+        val n = (index * 4567 + 11) % (26 * 26 * 26)
         return buildString {
-            append(letters[(index * 7 + 3) % 26])
-            append(letters[(index * 11 + 5) % 26])
-            append(letters[(index * 13 + 1) % 26])
-            if (index % 3 == 0) append(letters[(index * 17 + 9) % 26])
+            append('A' + n / (26 * 26))
+            append('A' + n / 26 % 26)
+            append('A' + n % 26)
+            if (index % 3 == 0) append('A' + index * 7 % 26)
         }
     }
 
@@ -234,9 +243,11 @@ private val HeaderBottom = Color(0xFF3B82F6)
 private const val SHARES_HELD = 25
 
 @Composable
-fun MarketDashboardScreen(modifier: Modifier = Modifier) {
+fun MarketDashboardScreen(
+    modifier: Modifier = Modifier,
+    simulator: MarketSimulator = remember { MarketSimulator() },
+) {
     RecompositionCounterEffect("MarketDashboardScreen")
-    val simulator = remember { MarketSimulator() }
     LaunchedEffect(simulator) { simulator.run() }
     val state by simulator.state.collectAsState()
 
@@ -294,6 +305,7 @@ fun MarketDashboardScreen(modifier: Modifier = Modifier) {
                 contentPadding = PaddingValues(vertical = 8.dp),
                 modifier = Modifier
                     .weight(1f)
+                    .testTag("stockList")
                     .background(ScreenBackground),
             ) {
                 items(visibleStocks) { stock ->
@@ -471,7 +483,7 @@ fun StockRow(
     onToggleFavorite: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    RecompositionCounterEffect("StockRow")
+    RecompositionCounterEffect("StockRow_${stock.symbol}")
     val currency = NumberFormat.getCurrencyInstance(Locale.US)
     val isUp = stock.price >= stock.previousPrice
     val trendColor = if (stock.changeFromOpenPercent >= 0) UpColor else DownColor

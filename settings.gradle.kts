@@ -24,4 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "compose-exercises"
 include(":app")
+include(":benchmark")
  
