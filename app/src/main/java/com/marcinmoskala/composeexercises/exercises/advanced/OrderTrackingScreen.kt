@@ -65,7 +65,7 @@ fun OrderTrackingScreen(tracker: OrderTracker, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.headlineSmall
             )
             Text(
-                text = "Estimated delivery: Tomorrow, 2–5 PM",
+                text = status,
                 style = MaterialTheme.typography.bodyMedium
             )
             Icon(

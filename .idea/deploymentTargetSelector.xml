@@ -23,7 +23,6 @@
           </Target>
         </DropdownSelection>
         <DialogSelection />
-        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>
