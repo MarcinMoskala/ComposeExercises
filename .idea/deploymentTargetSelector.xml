@@ -13,15 +13,8 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="MarketDashboardBenchmark">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-10T16:45:15.974163Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/mm/.android/avd/Pixel_Fold_API_34.avd" />
-            </handle>
-          </Target>
-        </DropdownSelection>
         <DialogSelection />
       </SelectionState>
     </selectionStates>

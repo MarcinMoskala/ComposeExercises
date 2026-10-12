@@ -65,9 +65,17 @@ class MarketDashboardBenchmark {
     ) {
         val list = device.findObject(By.res("stockList"))
         list.setGestureMargin(device.displayWidth / 5)
-        // fling() waits until scrolling finishes
-        repeat(3) { list.fling(Direction.DOWN) }
-        repeat(3) { list.fling(Direction.UP) }
+        // Not fling(): it waits for the end of scrolling, which UiAutomator cannot detect
+        // in a LazyColumn, so every fling would wait for its 5 s timeout.
+        // swipe() returns right away, the fixed pause lets the fling settle.
+        repeat(3) {
+            list.swipe(Direction.UP, 0.8f, SWIPE_SPEED) // finger moves up, list scrolls down
+            Thread.sleep(1_000)
+        }
+        repeat(3) {
+            list.swipe(Direction.DOWN, 0.8f, SWIPE_SPEED)
+            Thread.sleep(1_000)
+        }
     }
 
     private fun MacrobenchmarkScope.startMarketDashboard() {
@@ -108,6 +116,7 @@ class MarketDashboardBenchmark {
 
     private companion object {
         const val PACKAGE_NAME = "com.marcinmoskala.composeexercises"
+        const val SWIPE_SPEED = 5_000 // px/s
         val TRACED_COMPOSABLES = listOf("MarketDashboardScreen", "MarketHeader", "LiveIndicator", "StockRow")
     }
 }
