@@ -46,8 +46,10 @@ class MarketDashboardBenchmark {
         iterations = iterations,
         // WARM, because composition tracing fails to enable on cold start (tracing-perfetto 1.0.1)
         startupMode = StartupMode.WARM,
+        setupBlock = { startMarketDashboard() },
     ) {
-        startMarketDashboard()
+        // Fixed measurement window: the app never becomes idle (clock, animations),
+        // so waiting for idle would make the window depend on the measured code.
         Thread.sleep(5_000)
     }
 
@@ -63,14 +65,9 @@ class MarketDashboardBenchmark {
     ) {
         val list = device.findObject(By.res("stockList"))
         list.setGestureMargin(device.displayWidth / 5)
-        repeat(3) {
-            list.fling(Direction.DOWN)
-            Thread.sleep(300)
-        }
-        repeat(3) {
-            list.fling(Direction.UP)
-            Thread.sleep(300)
-        }
+        // fling() waits until scrolling finishes
+        repeat(3) { list.fling(Direction.DOWN) }
+        repeat(3) { list.fling(Direction.UP) }
     }
 
     private fun MacrobenchmarkScope.startMarketDashboard() {
