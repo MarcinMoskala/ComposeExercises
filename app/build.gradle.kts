@@ -95,6 +95,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.compose.runtime.tracing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
